@@ -1,0 +1,1315 @@
+/* ============================================================
+   SAVINGS GOALS PAGE
+   ============================================================ */
+
+.savings-page {
+    padding: 32px 34px 48px;
+    color: #edf2ff;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.savings-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.savings-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #7186ff;
+    margin-bottom: 7px;
+}
+
+.savings-header h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    color: #f4f7ff;
+}
+
+.savings-header p {
+    margin: 9px 0 0;
+    color: #91a0bc;
+    font-size: 14px;
+}
+
+.savings-header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.savings-primary-button,
+.savings-refresh-button,
+.savings-cancel-button {
+    height: 42px;
+    border-radius: 10px;
+    border: 0;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease,
+            background 0.18s ease,
+            border-color 0.18s ease;
+}
+
+.savings-primary-button {
+    color: #ffffff;
+    background: linear-gradient(
+            135deg,
+            #596cf0,
+            #705ee8
+    );
+    box-shadow:
+            0 8px 22px rgba(
+                    89,
+                    108,
+                    240,
+                    0.22
+            );
+}
+
+.savings-primary-button:hover {
+    transform: translateY(-1px);
+    box-shadow:
+            0 12px 28px rgba(
+                    89,
+                    108,
+                    240,
+                    0.32
+            );
+}
+
+.savings-refresh-button,
+.savings-cancel-button {
+    color: #b5c0d7;
+    background: #151d2d;
+    border: 1px solid #26334e;
+}
+
+.savings-refresh-button:hover,
+.savings-cancel-button:hover {
+    background: #1b2538;
+    border-color: #34435f;
+}
+
+.savings-primary-button:disabled,
+.savings-refresh-button:disabled,
+.savings-cancel-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.savings-error {
+    min-height: 48px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    background: rgba(127, 29, 29, 0.18);
+    color: #ff9b9b;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    font-size: 13px;
+}
+
+.savings-error button {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #ff9b9b;
+    cursor: pointer;
+}
+
+.savings-error button:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.savings-summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.savings-summary-card {
+    min-height: 126px;
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+    transition:
+            border-color 0.18s ease,
+            transform 0.18s ease,
+            box-shadow 0.18s ease;
+}
+
+.savings-summary-card:hover {
+    transform: translateY(-2px);
+    border-color: #34435f;
+    box-shadow:
+            0 12px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.2
+            );
+}
+
+.summary-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-icon.blue {
+    color: #7186ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.14
+    );
+}
+
+.summary-icon.purple {
+    color: #a78bfa;
+    background: rgba(
+            139,
+            92,
+            246,
+            0.14
+    );
+}
+
+.summary-icon.green {
+    color: #4ade80;
+    background: rgba(
+            34,
+            197,
+            94,
+            0.12
+    );
+}
+
+.summary-icon.orange {
+    color: #fbbf69;
+    background: rgba(
+            245,
+            158,
+            11,
+            0.12
+    );
+}
+
+.savings-summary-card span {
+    display: block;
+    color: #91a0bc;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.savings-summary-card strong {
+    display: block;
+    color: #edf2ff;
+    font-size: 21px;
+    line-height: 1.15;
+}
+
+.savings-summary-card small {
+    display: block;
+    color: #6f7d98;
+    font-size: 11px;
+    margin-top: 7px;
+}
+
+
+/* ============================================================
+   CONTENT GRID
+   ============================================================ */
+
+.savings-content-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.65fr)
+        minmax(330px, 0.85fr);
+    gap: 20px;
+    align-items: start;
+}
+
+.savings-goals-section,
+.savings-analysis-panel {
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 17px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+}
+
+.savings-goals-section {
+    padding: 22px;
+}
+
+.savings-section-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.savings-section-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #edf2ff;
+}
+
+.savings-section-header p {
+    margin: 5px 0 0;
+    color: #8190ab;
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   GOAL CARD
+   ============================================================ */
+
+.savings-goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.savings-goal-card {
+    border: 1px solid #26334e;
+    border-radius: 14px;
+    padding: 18px;
+    background: #111827;
+    transition:
+            border-color 0.18s ease,
+            box-shadow 0.18s ease,
+            transform 0.18s ease;
+}
+
+.savings-goal-card:hover,
+.savings-goal-card.selected {
+    border-color: #596cf0;
+    box-shadow:
+            0 7px 22px rgba(
+                    89,
+                    108,
+                    240,
+                    0.12
+            );
+}
+
+.savings-goal-card:hover {
+    transform: translateY(-1px);
+}
+
+.goal-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.goal-title-area {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.goal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.14
+    );
+    color: #7186ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.goal-title-area h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #edf2ff;
+}
+
+.goal-title-area span {
+    display: block;
+    margin-top: 4px;
+    color: #8190ab;
+    font-size: 11px;
+}
+
+.goal-status {
+    padding: 6px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.goal-status.completed {
+    color: #6ee7b7;
+    background: rgba(
+            16,
+            185,
+            129,
+            0.14
+    );
+}
+
+.goal-status.progress {
+    color: #8ea0ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.14
+    );
+}
+
+.goal-status.neutral {
+    color: #a1aec5;
+    background: rgba(
+            148,
+            163,
+            184,
+            0.12
+    );
+}
+
+.goal-status.danger {
+    color: #ff8f8f;
+    background: rgba(
+            239,
+            68,
+            68,
+            0.13
+    );
+}
+
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+
+.goal-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 21px;
+}
+
+.goal-progress-track {
+    flex: 1;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #26334b;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+            90deg,
+            #596cf0,
+            #805ee8
+    );
+    transition: width 0.35s ease;
+}
+
+.goal-progress-row strong {
+    width: 39px;
+    text-align: right;
+    font-size: 12px;
+    color: #aab6cc;
+}
+
+
+/* ============================================================
+   AMOUNTS
+   ============================================================ */
+
+.goal-amount-row {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 19px;
+}
+
+.goal-amount-row div {
+    padding: 11px 12px;
+    background: #182234;
+    border: 1px solid #202c42;
+    border-radius: 10px;
+}
+
+.goal-amount-row span {
+    display: block;
+    color: #7f8da8;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.goal-amount-row strong {
+    color: #dfe6f7;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   GOAL ACTIONS
+   ============================================================ */
+
+.goal-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.goal-card-actions button {
+    height: 34px;
+    padding: 0 11px;
+    border-radius: 8px;
+    border: 1px solid #2b3852;
+    background: #182234;
+    color: #aab6cc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+            background 0.18s ease,
+            border-color 0.18s ease,
+            color 0.18s ease;
+}
+
+.goal-analyze-button {
+    color: #91a0ff !important;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.11
+    ) !important;
+    border-color: rgba(
+            89,
+            108,
+            240,
+            0.28
+    ) !important;
+}
+
+.goal-analyze-button:hover {
+    background: rgba(
+            89,
+            108,
+            240,
+            0.18
+    ) !important;
+    border-color: rgba(
+            89,
+            108,
+            240,
+            0.42
+    ) !important;
+}
+
+.goal-edit-button:hover {
+    background: #202c42 !important;
+    border-color: #3a4966 !important;
+    color: #edf2ff !important;
+}
+
+.goal-delete-button {
+    color: #ff9292 !important;
+}
+
+.goal-delete-button:hover {
+    background: rgba(
+            239,
+            68,
+            68,
+            0.1
+    ) !important;
+    border-color: rgba(
+            239,
+            68,
+            68,
+            0.25
+    ) !important;
+}
+
+.goal-card-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   ANALYSIS PANEL
+   ============================================================ */
+
+.savings-analysis-panel {
+    padding: 22px;
+    min-height: 400px;
+    position: sticky;
+    top: 20px;
+}
+
+.analysis-empty,
+.analysis-loading {
+    min-height: 355px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.analysis-empty-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8495ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+    margin-bottom: 14px;
+}
+
+.analysis-empty h3,
+.analysis-loading h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #edf2ff;
+}
+
+.analysis-empty p,
+.analysis-loading p {
+    max-width: 280px;
+    margin: 8px 0 0;
+    color: #8190ab;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   ANALYSIS HEADER
+   ============================================================ */
+
+.analysis-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 18px;
+}
+
+.analysis-header span {
+    color: #7f91ff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.analysis-header h2 {
+    margin: 5px 0 0;
+    font-size: 19px;
+    color: #edf2ff;
+}
+
+.analysis-sparkle {
+    width: 39px;
+    height: 39px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8495ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+}
+
+
+/* ============================================================
+   ANALYSIS PROGRESS
+   ============================================================ */
+
+.analysis-progress {
+    display: flex;
+    justify-content: center;
+    padding: 13px 0 20px;
+}
+
+.analysis-progress-circle {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background:
+            linear-gradient(
+                    #151d2d,
+                    #151d2d
+            ) padding-box,
+            linear-gradient(
+                    135deg,
+                    #596cf0,
+                    #855be9
+            ) border-box;
+    border: 7px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+            0 0 30px rgba(
+                    89,
+                    108,
+                    240,
+                    0.08
+            );
+}
+
+.analysis-progress-circle strong {
+    font-size: 25px;
+    color: #f1f5ff;
+}
+
+.analysis-progress-circle span {
+    margin-top: 2px;
+    font-size: 10px;
+    color: #8190ab;
+}
+
+
+/* ============================================================
+   ANALYSIS STATS
+   ============================================================ */
+
+.analysis-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(3, 1fr);
+    gap: 8px;
+}
+
+.analysis-stats div {
+    padding: 11px;
+    border-radius: 10px;
+    background: #111827;
+    border: 1px solid #202c42;
+}
+
+.analysis-stats span {
+    display: block;
+    font-size: 9px;
+    color: #8190ab;
+    margin-bottom: 5px;
+}
+
+.analysis-stats strong {
+    font-size: 12px;
+    color: #dfe6f7;
+}
+
+
+/* ============================================================
+   ANALYSIS DETAILS
+   ============================================================ */
+
+.analysis-divider {
+    height: 1px;
+    background: #26334e;
+    margin: 19px 0 10px;
+}
+
+.analysis-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.analysis-detail-row {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid #202c42;
+}
+
+.analysis-detail-row:last-child {
+    border-bottom: 0;
+}
+
+.analysis-detail-row > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8190ab;
+    font-size: 11px;
+}
+
+.analysis-detail-row strong {
+    color: #dfe6f7;
+    font-size: 12px;
+}
+
+.analysis-detail-row.highlight strong {
+    color: #91a0ff;
+}
+
+
+/* ============================================================
+   ANALYSIS STATUS
+   ============================================================ */
+
+.analysis-status {
+    margin-top: 15px;
+    min-height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.analysis-status.completed {
+    color: #6ee7b7;
+    background: rgba(
+            16,
+            185,
+            129,
+            0.14
+    );
+}
+
+.analysis-status.progress {
+    color: #8ea0ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.14
+    );
+}
+
+.analysis-status.neutral {
+    color: #a1aec5;
+    background: rgba(
+            148,
+            163,
+            184,
+            0.12
+    );
+}
+
+.analysis-status.danger {
+    color: #ff8f8f;
+    background: rgba(
+            239,
+            68,
+            68,
+            0.13
+    );
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.savings-empty {
+    min-height: 370px;
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 17px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+}
+
+.savings-empty-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7186ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+    margin-bottom: 15px;
+}
+
+.savings-empty h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #edf2ff;
+}
+
+.savings-empty p {
+    margin: 8px 0 19px;
+    color: #8190ab;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.savings-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(
+            3,
+            8,
+            18,
+            0.72
+    );
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.savings-modal {
+    width: min(
+            520px,
+            100%
+    );
+    background: #151d2d;
+    border: 1px solid #2b3954;
+    border-radius: 18px;
+    box-shadow:
+            0 25px 80px rgba(
+                    0,
+                    0,
+                    0,
+                    0.45
+            );
+    overflow: hidden;
+}
+
+.savings-modal-header {
+    padding: 21px 22px;
+    border-bottom: 1px solid #26334e;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.savings-modal-header span {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+    color: #7f91ff;
+}
+
+.savings-modal-header h2 {
+    margin: 5px 0 0;
+    font-size: 20px;
+    color: #edf2ff;
+}
+
+.modal-close-button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #2b3954;
+    border-radius: 9px;
+    background: #111827;
+    color: #91a0bc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modal-close-button:hover {
+    background: #1c273a;
+    color: #edf2ff;
+}
+
+.savings-modal form {
+    padding: 22px;
+}
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.savings-form-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 17px;
+}
+
+.savings-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.savings-form-field.full {
+    grid-column: 1 / -1;
+}
+
+.savings-form-field label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #a8b4ca;
+}
+
+.savings-form-field input {
+    width: 100%;
+    height: 43px;
+    box-sizing: border-box;
+    border: 1px solid #2c3953;
+    border-radius: 9px;
+    outline: none;
+    padding: 0 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: #edf2ff;
+    background: #111827;
+    transition:
+            border-color 0.15s ease,
+            box-shadow 0.15s ease,
+            background 0.15s ease;
+}
+
+.savings-form-field input::placeholder {
+    color: #5f6d87;
+}
+
+.savings-form-field input:focus {
+    border-color: #6678f2;
+    box-shadow:
+            0 0 0 3px rgba(
+                    89,
+                    108,
+                    240,
+                    0.12
+            );
+    background: #131d2e;
+}
+
+.savings-form-field input:disabled {
+    background: #182234;
+    color: #78869f;
+}
+
+
+/* ============================================================
+   DATE INPUT
+   ============================================================ */
+
+.savings-form-field input[type="date"] {
+    color-scheme: dark;
+}
+
+
+/* ============================================================
+   CURRENCY INPUT
+   ============================================================ */
+
+.currency-input {
+    height: 43px;
+    border: 1px solid #2c3953;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: #111827;
+}
+
+.currency-input:focus-within {
+    border-color: #6678f2;
+    box-shadow:
+            0 0 0 3px rgba(
+                    89,
+                    108,
+                    240,
+                    0.12
+            );
+}
+
+.currency-input > span {
+    width: 37px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #182234;
+    color: #8f9db6;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.currency-input input {
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: transparent;
+}
+
+
+/* ============================================================
+   FORM ERROR
+   ============================================================ */
+
+.savings-form-error {
+    margin-top: 17px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    background: rgba(
+            127,
+            29,
+            29,
+            0.18
+    );
+    border: 1px solid rgba(
+            239,
+            68,
+            68,
+            0.25
+    );
+    color: #ff9b9b;
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.savings-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 23px;
+    padding-top: 18px;
+    border-top: 1px solid #26334e;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.savings-loading {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8190ab;
+    text-align: center;
+}
+
+.savings-loading h2 {
+    margin: 15px 0 5px;
+    color: #edf2ff;
+    font-size: 20px;
+}
+
+.savings-loading p {
+    margin: 0;
+    color: #8190ab;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   ANIMATION
+   ============================================================ */
+
+.spin {
+    animation: savings-spin 0.9s linear infinite;
+}
+
+@keyframes savings-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .savings-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .savings-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .savings-analysis-panel {
+        position: static;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .savings-page {
+        padding: 22px 16px 35px;
+    }
+
+    .savings-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .savings-header-actions {
+        width: 100%;
+    }
+
+    .savings-header-actions button {
+        flex: 1;
+    }
+
+    .savings-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-card-top {
+        flex-direction: column;
+    }
+
+    .goal-amount-row {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-card-actions {
+        flex-wrap: wrap;
+    }
+
+    .savings-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .savings-form-field.full {
+        grid-column: auto;
+    }
+
+    .analysis-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .savings-modal-overlay {
+        padding: 12px;
+    }
+}

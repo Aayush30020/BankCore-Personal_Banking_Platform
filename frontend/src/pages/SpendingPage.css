@@ -1,0 +1,914 @@
+/* ============================================================
+   BANKCORE SPENDING PAGE
+   Dark navy UI matching Transactions page
+   ============================================================ */
+
+.spending-page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+
+    color: #edf2ff;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.spending-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-bottom: 28px;
+}
+
+.spending-eyebrow {
+    margin-bottom: 8px;
+
+    color: #7186ff;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.6px;
+}
+
+.spending-header h1 {
+    margin: 0;
+
+    color: #edf2ff;
+
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+.spending-header p {
+    max-width: 620px;
+
+    margin: 9px 0 0;
+
+    color: #91a0bc;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   REFRESH BUTTON
+   ============================================================ */
+
+.spending-refresh-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid #2a3855;
+    border-radius: 10px;
+
+    background: #151e30;
+    color: #dbe4ff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.spending-refresh-button:hover {
+    background: #1a253a;
+
+    border-color: #40517a;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+.spending-refresh-button:disabled {
+    opacity: 0.65;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.spending-refresh-spin {
+    animation:
+            spending-spin 0.9s linear infinite;
+}
+
+@keyframes spending-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
+
+.spending-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.spending-summary-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    min-height: 105px;
+
+    padding: 20px;
+
+    overflow: hidden;
+
+    border: 1px solid #26334e;
+    border-radius: 14px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #151e30 0%,
+                    #121a29 100%
+            );
+
+    box-shadow:
+            0 8px 25px rgba(0, 0, 0, 0.16);
+
+    transition:
+            border-color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.spending-summary-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 110px;
+    height: 110px;
+
+    right: -48px;
+    bottom: -58px;
+
+    border-radius: 50%;
+
+    background:
+            rgba(89, 108, 240, 0.08);
+
+    pointer-events: none;
+}
+
+.spending-summary-card:hover {
+    border-color: #344567;
+
+    transform: translateY(-2px);
+}
+
+.spending-summary-card.primary {
+    border-color: #34456d;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #18243b 0%,
+                    #131d30 100%
+            );
+}
+
+.spending-summary-icon {
+    position: relative;
+    z-index: 1;
+
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(113, 134, 255, 0.2);
+    border-radius: 11px;
+
+    background:
+            rgba(89, 108, 240, 0.14);
+
+    color: #7c8cff;
+}
+
+.spending-summary-icon.blue {
+    border-color: rgba(56, 189, 248, 0.18);
+
+    background:
+            rgba(56, 189, 248, 0.10);
+
+    color: #38bdf8;
+}
+
+.spending-summary-icon.purple {
+    border-color: rgba(167, 139, 250, 0.18);
+
+    background:
+            rgba(167, 139, 250, 0.10);
+
+    color: #a78bfa;
+}
+
+.spending-summary-card > div:last-child {
+    position: relative;
+    z-index: 1;
+
+    min-width: 0;
+}
+
+.spending-summary-card span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #91a0bc;
+
+    font-size: 12px;
+}
+
+.spending-summary-card strong {
+    display: block;
+
+    color: #edf2ff;
+
+    font-size: 21px;
+    line-height: 1.25;
+}
+
+.spending-summary-card small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #687894;
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   STAT CARDS
+   ============================================================ */
+
+.spending-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+.spending-stat-card {
+    padding: 18px;
+
+    border: 1px solid #26334e;
+    border-radius: 13px;
+
+    background: #151e30;
+
+    box-shadow:
+            0 6px 20px rgba(0, 0, 0, 0.13);
+
+    transition:
+            border-color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.spending-stat-card:hover {
+    border-color: #344567;
+
+    transform: translateY(-2px);
+}
+
+.spending-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 13px;
+}
+
+.spending-stat-top > span {
+    color: #91a0bc;
+
+    font-size: 12px;
+}
+
+.stat-icon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+}
+
+.stat-icon.red {
+    border: 1px solid rgba(251, 113, 133, 0.15);
+
+    background:
+            rgba(251, 113, 133, 0.10);
+
+    color: #fb7185;
+}
+
+.stat-icon.green {
+    border: 1px solid rgba(52, 211, 153, 0.15);
+
+    background:
+            rgba(52, 211, 153, 0.10);
+
+    color: #34d399;
+}
+
+.stat-icon.orange {
+    border: 1px solid rgba(251, 191, 36, 0.15);
+
+    background:
+            rgba(251, 191, 36, 0.10);
+
+    color: #fbbf24;
+}
+
+.stat-icon.blue {
+    border: 1px solid rgba(56, 189, 248, 0.15);
+
+    background:
+            rgba(56, 189, 248, 0.10);
+
+    color: #38bdf8;
+}
+
+.spending-stat-card > strong {
+    display: block;
+
+    color: #edf2ff;
+
+    font-size: 20px;
+    line-height: 1.3;
+}
+
+.spending-stat-card > small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #687894;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   CHART GRID
+   ============================================================ */
+
+.spending-chart-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(340px, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.spending-chart-card,
+.spending-category-card {
+    border: 1px solid #26334e;
+    border-radius: 15px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #151e30 0%,
+                    #111927 100%
+            );
+
+    box-shadow:
+            0 8px 25px rgba(0, 0, 0, 0.16);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+
+.spending-chart-header {
+    padding: 21px 22px 17px;
+
+    border-bottom: 1px solid #26334e;
+}
+
+.section-eyebrow {
+    margin-bottom: 6px;
+
+    color: #7186ff;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+}
+
+.spending-chart-header h2 {
+    margin: 0;
+
+    color: #edf2ff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: -0.1px;
+}
+
+.spending-chart-header p {
+    margin: 5px 0 0;
+
+    color: #7f8da8;
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   BAR CHART
+   ============================================================ */
+
+.spending-bar-chart {
+    padding: 16px 18px 10px;
+}
+
+
+/* ============================================================
+   PIE CHART
+   ============================================================ */
+
+.spending-pie-wrapper {
+    padding: 12px 22px 20px;
+}
+
+.spending-legend {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 8px 18px;
+
+    padding-top: 4px;
+}
+
+.spending-legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    color: #91a0bc;
+
+    font-size: 11px;
+}
+
+.spending-legend-item span {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.spending-legend-item span i {
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.spending-legend-item strong {
+    color: #dbe4ff;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   CATEGORY TABLE
+   ============================================================ */
+
+.spending-category-card {
+    margin-bottom: 20px;
+}
+
+.category-table-wrapper {
+    overflow-x: auto;
+}
+
+.category-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.category-table th {
+    padding: 13px 22px;
+
+    background: #111927;
+
+    border-bottom: 1px solid #26334e;
+
+    color: #71809b;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-align: left;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.category-table td {
+    padding: 15px 22px;
+
+    border-bottom: 1px solid #202d44;
+
+    color: #91a0bc;
+
+    font-size: 12px;
+}
+
+.category-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.category-table tbody tr {
+    transition:
+            background 0.15s ease;
+}
+
+.category-table tbody tr:hover {
+    background:
+            rgba(89, 108, 240, 0.055);
+}
+
+.category-name {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.category-name strong {
+    color: #e4eaff;
+
+    font-weight: 600;
+}
+
+.category-dot {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.category-table td > strong {
+    color: #e4eaff;
+}
+
+
+/* ============================================================
+   SHARE BAR
+   ============================================================ */
+
+.category-share {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-width: 150px;
+}
+
+.share-bar {
+    width: 100px;
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #26334e;
+}
+
+.share-bar span {
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+            linear-gradient(
+                    90deg,
+                    #596cf0,
+                    #7186ff
+            );
+}
+
+.category-share small {
+    min-width: 35px;
+
+    color: #7f8da8;
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   EMPTY STATES
+   ============================================================ */
+
+.spending-empty {
+    min-height: 280px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #66758f;
+
+    font-size: 12px;
+}
+
+.spending-empty svg {
+    color: #53627d;
+}
+
+.spending-empty p {
+    margin: 0;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.spending-loading {
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    color: #91a0bc;
+}
+
+.spending-loading p {
+    margin: 0;
+
+    font-size: 13px;
+}
+
+.spending-spinner {
+    width: 30px;
+    height: 30px;
+
+    border: 3px solid #26334e;
+
+    border-top-color: #6f7cff;
+
+    border-radius: 50%;
+
+    animation:
+            spending-spinner 0.8s linear infinite;
+}
+
+@keyframes spending-spinner {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.spending-error {
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #fb7185;
+}
+
+.spending-error-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(251, 113, 133, 0.18);
+    border-radius: 16px;
+
+    background:
+            rgba(251, 113, 133, 0.08);
+
+    color: #fb7185;
+}
+
+.spending-error h2 {
+    margin: 14px 0 6px;
+
+    color: #edf2ff;
+
+    font-size: 18px;
+}
+
+.spending-error p {
+    max-width: 420px;
+
+    margin: 0;
+
+    color: #91a0bc;
+
+    font-size: 12px;
+}
+
+.spending-error button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 18px;
+
+    height: 38px;
+
+    padding: 0 18px;
+
+    border: 1px solid #35466d;
+    border-radius: 8px;
+
+    background: #1a2640;
+    color: #dbe4ff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease;
+}
+
+.spending-error button:hover {
+    background: #22304e;
+
+    border-color: #5065a0;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .spending-stat-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .spending-chart-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 800px) {
+
+    .spending-page {
+        padding: 22px 16px;
+    }
+
+    .spending-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .spending-header {
+        flex-direction: column;
+    }
+
+    .spending-refresh-button {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 560px) {
+
+    .spending-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .spending-legend {
+        grid-template-columns: 1fr;
+    }
+
+    .category-table th,
+    .category-table td {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .spending-header h1 {
+        font-size: 26px;
+    }
+}

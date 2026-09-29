@@ -1,0 +1,1085 @@
+/* ============================================================
+   FINANCIAL HEALTH PAGE
+   ============================================================ */
+
+.financial-health-page {
+    padding: 32px 34px 48px;
+    color: #edf2ff;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.financial-health-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.financial-health-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: #7186ff;
+    margin-bottom: 7px;
+}
+
+.financial-health-header h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    color: #f4f7ff;
+}
+
+.financial-health-header p {
+    margin: 9px 0 0;
+    color: #91a0bc;
+    font-size: 14px;
+    max-width: 700px;
+}
+
+.financial-health-refresh-button {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #26334e;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #b5c0d7;
+    background: #151d2d;
+    transition:
+            transform 0.18s ease,
+            background 0.18s ease,
+            border-color 0.18s ease;
+}
+
+.financial-health-refresh-button:hover {
+    transform: translateY(-1px);
+    background: #1b2538;
+    border-color: #34435f;
+}
+
+.financial-health-refresh-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ============================================================
+   ERROR
+   ============================================================ */
+
+.financial-health-error {
+    min-height: 52px;
+    margin-bottom: 20px;
+    padding: 11px 14px;
+    border-radius: 11px;
+    border: 1px solid rgba(
+            239,
+            68,
+            68,
+            0.28
+    );
+    background: rgba(
+            127,
+            29,
+            29,
+            0.18
+    );
+    color: #ff9b9b;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.financial-health-error > div:nth-child(2) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.financial-health-error strong {
+    font-size: 12px;
+    color: #ffb0b0;
+}
+
+.financial-health-error span {
+    font-size: 11px;
+    color: #e58b8b;
+}
+
+.financial-health-error > button {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #ff9b9b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.financial-health-error > button:hover {
+    background: rgba(
+            239,
+            68,
+            68,
+            0.12
+    );
+}
+
+.financial-health-error-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(
+            239,
+            68,
+            68,
+            0.12
+    );
+    color: #ff9292;
+}
+
+
+/* ============================================================
+   ERROR PAGE
+   ============================================================ */
+
+.financial-health-error-page {
+    min-height: 500px;
+    border: 1px solid #26334e;
+    border-radius: 17px;
+    background: #151d2d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+}
+
+.financial-health-error-page .financial-health-error-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: rgba(
+            239,
+            68,
+            68,
+            0.12
+    );
+    color: #ff9292;
+    margin-bottom: 16px;
+}
+
+.financial-health-error-page h2 {
+    margin: 0;
+    color: #edf2ff;
+    font-size: 20px;
+}
+
+.financial-health-error-page p {
+    max-width: 450px;
+    margin: 9px 0 20px;
+    color: #8190ab;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.financial-health-primary-button {
+    height: 42px;
+    padding: 0 17px;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    background: linear-gradient(
+            135deg,
+            #596cf0,
+            #705ee8
+    );
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow:
+            0 8px 22px rgba(
+                    89,
+                    108,
+                    240,
+                    0.22
+            );
+    transition:
+            transform 0.18s ease,
+            box-shadow 0.18s ease;
+}
+
+.financial-health-primary-button:hover {
+    transform: translateY(-1px);
+    box-shadow:
+            0 12px 28px rgba(
+                    89,
+                    108,
+                    240,
+                    0.32
+            );
+}
+
+
+/* ============================================================
+   SUMMARY
+   ============================================================ */
+
+.financial-health-summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.financial-health-summary-card {
+    min-height: 126px;
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+    transition:
+            transform 0.18s ease,
+            border-color 0.18s ease,
+            box-shadow 0.18s ease;
+}
+
+.financial-health-summary-card:hover {
+    transform: translateY(-2px);
+    border-color: #34435f;
+    box-shadow:
+            0 12px 30px rgba(
+                    0,
+                    0,
+                    0,
+                    0.2
+            );
+}
+
+.financial-health-summary-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.financial-health-summary-icon.blue {
+    color: #7186ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.14
+    );
+}
+
+.financial-health-summary-icon.purple {
+    color: #a78bfa;
+    background: rgba(
+            139,
+            92,
+            246,
+            0.14
+    );
+}
+
+.financial-health-summary-icon.orange {
+    color: #fbbf69;
+    background: rgba(
+            245,
+            158,
+            11,
+            0.12
+    );
+}
+
+.financial-health-summary-icon.green {
+    color: #4ade80;
+    background: rgba(
+            34,
+            197,
+            94,
+            0.12
+    );
+}
+
+.financial-health-summary-card span {
+    display: block;
+    color: #91a0bc;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.financial-health-summary-card strong {
+    display: block;
+    color: #edf2ff;
+    font-size: 21px;
+    line-height: 1.15;
+}
+
+.financial-health-summary-card small {
+    display: block;
+    color: #6f7d98;
+    font-size: 11px;
+    margin-top: 7px;
+}
+
+
+/* ============================================================
+   COMMON SECTION
+   ============================================================ */
+
+.financial-health-section {
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 17px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+}
+
+.financial-health-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 19px;
+}
+
+.financial-health-section-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #edf2ff;
+}
+
+.financial-health-section-header p {
+    margin: 5px 0 0;
+    color: #8190ab;
+    font-size: 12px;
+}
+
+.financial-health-section-icon {
+    width: 39px;
+    height: 39px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8495ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+}
+
+
+/* ============================================================
+   CASH FLOW
+   ============================================================ */
+
+.financial-health-cash-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.financial-health-cash-card {
+    min-height: 92px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #111827;
+    border: 1px solid #202c42;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition:
+            border-color 0.18s ease,
+            background 0.18s ease;
+}
+
+.financial-health-cash-card:hover {
+    border-color: #34435f;
+    background: #141e30;
+}
+
+.cash-card-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cash-card-icon.sent {
+    color: #fbbf69;
+    background: rgba(
+            245,
+            158,
+            11,
+            0.12
+    );
+}
+
+.cash-card-icon.received {
+    color: #4ade80;
+    background: rgba(
+            34,
+            197,
+            94,
+            0.12
+    );
+}
+
+.cash-card-icon.flow {
+    color: #7186ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+}
+
+.cash-card-icon.volume {
+    color: #a78bfa;
+    background: rgba(
+            139,
+            92,
+            246,
+            0.13
+    );
+}
+
+.financial-health-cash-card span {
+    display: block;
+    color: #8190ab;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.financial-health-cash-card strong {
+    display: block;
+    color: #e6ecfa;
+    font-size: 15px;
+}
+
+
+/* ============================================================
+   OVERALL SPENDING
+   ============================================================ */
+
+.financial-health-spending-grid {
+    display: grid;
+    grid-template-columns:
+        1.4fr
+        repeat(4, 1fr);
+    gap: 10px;
+}
+
+.financial-health-spending-main {
+    min-height: 116px;
+    padding: 18px;
+    border-radius: 12px;
+    background:
+            linear-gradient(
+                    135deg,
+                    rgba(89, 108, 240, 0.13),
+                    rgba(112, 94, 232, 0.07)
+            ),
+            #111827;
+    border: 1px solid rgba(
+            89,
+            108,
+            240,
+            0.24
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.financial-health-spending-main span {
+    color: #91a0bc;
+    font-size: 11px;
+    margin-bottom: 7px;
+}
+
+.financial-health-spending-main strong {
+    color: #f1f5ff;
+    font-size: 24px;
+    line-height: 1.15;
+}
+
+.financial-health-spending-main small {
+    margin-top: 7px;
+    color: #71809b;
+    font-size: 10px;
+}
+
+.financial-health-metric-card {
+    min-height: 116px;
+    padding: 15px;
+    border-radius: 12px;
+    background: #111827;
+    border: 1px solid #202c42;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.financial-health-metric-card span {
+    color: #8190ab;
+    font-size: 10px;
+    line-height: 1.4;
+    margin-bottom: 7px;
+}
+
+.financial-health-metric-card strong {
+    color: #dfe6f7;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+
+/* ============================================================
+   MONTHLY PERIODS
+   ============================================================ */
+
+.financial-health-period-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.financial-health-period-card {
+    background: #151d2d;
+    border: 1px solid #26334e;
+    border-radius: 17px;
+    padding: 22px;
+    box-shadow:
+            0 8px 25px rgba(
+                    0,
+                    0,
+                    0,
+                    0.14
+            );
+}
+
+.period-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.period-card-header > div:first-child > span {
+    color: #7f91ff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.period-card-header h3 {
+    margin: 5px 0 0;
+    font-size: 18px;
+    color: #edf2ff;
+}
+
+.period-icon {
+    width: 39px;
+    height: 39px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.period-icon.current {
+    color: #7186ff;
+    background: rgba(
+            89,
+            108,
+            240,
+            0.13
+    );
+}
+
+.period-icon.previous {
+    color: #a78bfa;
+    background: rgba(
+            139,
+            92,
+            246,
+            0.13
+    );
+}
+
+.period-date {
+    margin-top: 13px;
+    color: #6f7d98;
+    font-size: 11px;
+}
+
+.period-total {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 11px;
+    background: #111827;
+    border: 1px solid #202c42;
+}
+
+.period-total span {
+    display: block;
+    color: #8190ab;
+    font-size: 10px;
+    margin-bottom: 6px;
+}
+
+.period-total strong {
+    display: block;
+    color: #edf2ff;
+    font-size: 21px;
+}
+
+.period-stats {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 10px;
+}
+
+.period-stats > div,
+.period-details > div {
+    padding: 11px;
+    border-radius: 10px;
+    background: #111827;
+    border: 1px solid #202c42;
+}
+
+.period-stats span,
+.period-details span {
+    display: block;
+    color: #7f8da8;
+    font-size: 9px;
+    margin-bottom: 5px;
+}
+
+.period-stats strong,
+.period-details strong {
+    display: block;
+    color: #dfe6f7;
+    font-size: 12px;
+}
+
+.period-details {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 9px;
+}
+
+
+/* ============================================================
+   COMPARISON
+   ============================================================ */
+
+.comparison-card {
+    min-height: 175px;
+    display: grid;
+    grid-template-columns:
+        1fr
+        180px
+        1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 13px;
+    background: #111827;
+    border: 1px solid #202c42;
+}
+
+.comparison-period {
+    min-height: 125px;
+    padding: 16px;
+    border-radius: 11px;
+    background: #151d2d;
+    border: 1px solid #26334e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.comparison-period > span {
+    color: #8190ab;
+    font-size: 10px;
+    margin-bottom: 7px;
+}
+
+.comparison-period > strong {
+    color: #edf2ff;
+    font-size: 21px;
+}
+
+.comparison-period > small {
+    margin-top: 7px;
+    color: #6f7d98;
+    font-size: 10px;
+}
+
+.comparison-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.comparison-change {
+    min-width: 105px;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.comparison-change.up {
+    color: #ffb0b0;
+    background: rgba(
+            239,
+            68,
+            68,
+            0.12
+    );
+}
+
+.comparison-change.down {
+    color: #6ee7b7;
+    background: rgba(
+            16,
+            185,
+            129,
+            0.13
+    );
+}
+
+.comparison-change.neutral {
+    color: #aab6cc;
+    background: rgba(
+            148,
+            163,
+            184,
+            0.12
+    );
+}
+
+.comparison-center > span {
+    margin-top: 9px;
+    color: #6f7d98;
+    font-size: 10px;
+}
+
+.comparison-difference {
+    margin-top: 5px;
+    color: #dfe6f7;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   FOOTER STATUS
+   ============================================================ */
+
+.financial-health-footer {
+    min-height: 55px;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(
+            34,
+            197,
+            94,
+            0.18
+    );
+    background: rgba(
+            34,
+            197,
+            94,
+            0.06
+    );
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #4ade80;
+}
+
+.financial-health-footer > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.financial-health-footer strong {
+    color: #b7f7d2;
+    font-size: 11px;
+}
+
+.financial-health-footer span {
+    color: #72917e;
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+.financial-health-loading {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #7186ff;
+}
+
+.financial-health-loading h2 {
+    margin: 15px 0 5px;
+    color: #edf2ff;
+    font-size: 20px;
+}
+
+.financial-health-loading p {
+    margin: 0;
+    color: #8190ab;
+    font-size: 13px;
+}
+
+
+/* ============================================================
+   ANIMATION
+   ============================================================ */
+
+.spin {
+    animation: financial-health-spin 0.9s linear infinite;
+}
+
+@keyframes financial-health-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+
+@media (max-width: 1150px) {
+
+    .financial-health-summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .financial-health-cash-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .financial-health-spending-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .financial-health-spending-main {
+        grid-column: 1 / -1;
+    }
+
+    .comparison-card {
+        grid-template-columns:
+            1fr
+            160px
+            1fr;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+
+@media (max-width: 750px) {
+
+    .financial-health-page {
+        padding: 22px 16px 35px;
+    }
+
+    .financial-health-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .financial-health-refresh-button {
+        width: 100%;
+    }
+
+    .financial-health-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .financial-health-cash-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .financial-health-spending-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .financial-health-spending-main {
+        grid-column: auto;
+    }
+
+    .financial-health-period-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .comparison-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .comparison-center {
+        order: 2;
+        padding: 5px 0;
+    }
+
+    .comparison-period:first-child {
+        order: 1;
+    }
+
+    .comparison-period:last-child {
+        order: 3;
+    }
+
+    .financial-health-section {
+        padding: 18px;
+    }
+
+    .financial-health-section-header {
+        align-items: flex-start;
+    }
+
+    .period-stats,
+    .period-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL SCREENS
+   ============================================================ */
+
+@media (max-width: 450px) {
+
+    .financial-health-header h1 {
+        font-size: 26px;
+    }
+
+    .financial-health-summary-card {
+        padding: 16px;
+    }
+
+    .financial-health-summary-card strong {
+        font-size: 18px;
+    }
+
+    .financial-health-section {
+        border-radius: 14px;
+    }
+
+    .financial-health-period-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .comparison-card {
+        padding: 13px;
+    }
+
+    .financial-health-error {
+        align-items: flex-start;
+    }
+}
