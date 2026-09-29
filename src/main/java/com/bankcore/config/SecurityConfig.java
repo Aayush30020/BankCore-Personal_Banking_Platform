@@ -171,11 +171,10 @@ public class SecurityConfig {
 
 
         // Frontend running through Vite
-        configuration.setAllowedOrigins(
-                List.of(
-                        "http://localhost:5173"
-                )
-        );
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://bank-core-personal-banking-platform.vercel.app"
+        ));
 
 
         // HTTP methods allowed from frontend
