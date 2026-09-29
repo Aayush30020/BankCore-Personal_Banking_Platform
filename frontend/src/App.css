@@ -1,0 +1,898 @@
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+
+/* ============================================================
+   BANKCORE — CREATE ACCOUNT MODAL
+   ============================================================ */
+
+.bankcore-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(3, 8, 20, 0.72);
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+
+.bankcore-modal {
+  width: 100%;
+  max-width: 520px;
+
+  overflow: hidden;
+
+  background: #151d2d;
+
+  border: 1px solid #2d3b58;
+  border-radius: 18px;
+
+  box-shadow:
+          0 25px 70px
+          rgba(0, 0, 0, 0.45);
+
+  color: #edf2ff;
+}
+
+
+.bankcore-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding: 22px;
+
+  border-bottom: 1px solid #26334e;
+}
+
+
+.bankcore-modal-icon {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  color: #8fa0ff;
+
+  background:
+          rgba(89, 108, 240, 0.12);
+
+  border: 1px solid
+  rgba(89, 108, 240, 0.18);
+}
+
+
+.bankcore-modal-header h2 {
+  margin: 0;
+
+  color: #f2f5ff;
+
+  font-size: 18px;
+  font-weight: 750;
+}
+
+
+.bankcore-modal-header p {
+  margin: 5px 0 0;
+
+  color: #8190ab;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+.bankcore-modal-close {
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #34435f;
+  border-radius: 9px;
+
+  color: #8c9ab3;
+
+  background: #111827;
+
+  cursor: pointer;
+
+  transition:
+          background 0.2s ease,
+          color 0.2s ease,
+          border-color 0.2s ease;
+}
+
+
+.bankcore-modal-close:hover:not(:disabled) {
+  background: #1b263b;
+
+  border-color: #465b84;
+
+  color: #edf2ff;
+}
+
+
+.bankcore-modal-close:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+
+.bankcore-modal-body {
+  padding: 22px;
+}
+
+
+.bankcore-form-group {
+  margin-bottom: 18px;
+}
+
+
+.bankcore-form-group > label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #c8d1e3;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* ============================================================
+   ACCOUNT TYPE OPTIONS
+   ============================================================ */
+
+.bankcore-account-type-options {
+  display: grid;
+
+  gap: 10px;
+}
+
+
+.bankcore-account-type-option {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 13px;
+
+  text-align: left;
+
+  border: 1px solid #2d3b58;
+  border-radius: 12px;
+
+  background: #111827;
+
+  color: #edf2ff;
+
+  cursor: pointer;
+
+  transition:
+          border-color 0.2s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+}
+
+
+.bankcore-account-type-option:hover:not(:disabled) {
+  border-color: #465b87;
+
+  background: #172137;
+}
+
+
+.bankcore-account-type-option.selected {
+  border-color: #596cf0;
+
+  background:
+          rgba(89, 108, 240, 0.10);
+
+  box-shadow:
+          0 0 0 1px
+          rgba(89, 108, 240, 0.10);
+}
+
+
+.bankcore-account-type-option:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+.bankcore-account-type-icon {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 11px;
+
+  border-radius: 9px;
+
+  color: #8fa0ff;
+
+  background:
+          rgba(89, 108, 240, 0.11);
+}
+
+
+.bankcore-account-type-content {
+  min-width: 0;
+}
+
+
+.bankcore-account-type-content strong {
+  display: block;
+
+  color: #e8edfa;
+
+  font-size: 13px;
+}
+
+
+.bankcore-account-type-content span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #7887a2;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+.bankcore-radio {
+  width: 16px;
+  height: 16px;
+
+  flex: 0 0 auto;
+
+  margin-left: auto;
+
+  border: 2px solid #4b5b79;
+  border-radius: 50%;
+
+  transition:
+          border-color 0.2s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+}
+
+
+.bankcore-account-type-option.selected
+.bankcore-radio {
+  border-color: #7186ff;
+
+  background:
+          radial-gradient(
+                  circle,
+                  #7186ff 0 4px,
+                  transparent 4.5px
+          );
+
+  box-shadow:
+          0 0 0 3px
+          rgba(89, 108, 240, 0.08);
+}
+
+
+/* ============================================================
+   ZERO BALANCE INFORMATION
+   ============================================================ */
+
+.bankcore-zero-balance {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  padding: 14px;
+
+  border: 1px solid #293752;
+  border-radius: 11px;
+
+  background: #111827;
+}
+
+
+.bankcore-zero-balance-icon {
+  width: 30px;
+  height: 30px;
+
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  color: #7f91ff;
+
+  background:
+          rgba(89, 108, 240, 0.10);
+}
+
+
+.bankcore-zero-balance strong {
+  display: block;
+
+  color: #dbe2f2;
+
+  font-size: 12px;
+}
+
+
+.bankcore-zero-balance span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #edf2ff;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+
+.bankcore-zero-balance p {
+  margin: 5px 0 0;
+
+  color: #74839e;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   CREATE ERROR
+   ============================================================ */
+
+.bankcore-create-error {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  margin-top: 14px;
+  padding: 12px 13px;
+
+  border: 1px solid #63343d;
+  border-radius: 10px;
+
+  background: #24171d;
+}
+
+
+.bankcore-create-error strong {
+  color: #ffb4bd;
+
+  font-size: 11px;
+}
+
+
+.bankcore-create-error span {
+  color: #c9838d;
+
+  font-size: 10px;
+
+  line-height: 1.45;
+}
+
+
+/* ============================================================
+   CREATE SUCCESS
+   ============================================================ */
+
+.bankcore-create-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 14px;
+  padding: 12px 13px;
+
+  border: 1px solid #28563c;
+  border-radius: 10px;
+
+  color: #86efac;
+
+  background:
+          rgba(34, 197, 94, 0.08);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.bankcore-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 16px 22px;
+
+  border-top: 1px solid #26334e;
+
+  background: #121a29;
+}
+
+
+.bankcore-modal-cancel {
+  padding: 10px 15px;
+
+  border: 1px solid #34435f;
+  border-radius: 9px;
+
+  background: #151d2d;
+
+  color: #a4b0c7;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+}
+
+
+.bankcore-modal-cancel:hover:not(:disabled) {
+  background: #1b263b;
+
+  border-color: #465b7e;
+
+  color: #edf2ff;
+}
+
+
+.bankcore-modal-cancel:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+}
+
+
+.bankcore-modal-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-width: 145px;
+
+  padding: 10px 16px;
+
+  border: 0;
+  border-radius: 9px;
+
+  color: #ffffff;
+
+  background:
+          linear-gradient(
+                  135deg,
+                  #596cf0,
+                  #7186ff
+          );
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+          0 6px 16px
+          rgba(89, 108, 240, 0.20);
+
+  transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          opacity 0.2s ease;
+}
+
+
+.bankcore-modal-create:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  box-shadow:
+          0 9px 20px
+          rgba(89, 108, 240, 0.28);
+}
+
+
+.bankcore-modal-create:disabled {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   MODAL SPINNER
+   ============================================================ */
+
+.bankcore-spin {
+  animation:
+          bankcore-modal-spin 1s linear infinite;
+}
+
+
+@keyframes bankcore-modal-spin {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ============================================================
+   MODAL RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+  .bankcore-modal-overlay {
+    padding: 14px;
+  }
+
+  .bankcore-modal {
+    max-width: 100%;
+
+    border-radius: 15px;
+  }
+
+  .bankcore-modal-header {
+    padding: 18px;
+  }
+
+  .bankcore-modal-body {
+    padding: 18px;
+  }
+
+  .bankcore-modal-footer {
+    padding: 14px 18px;
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+  .bankcore-modal-header {
+    gap: 10px;
+  }
+
+  .bankcore-modal-header h2 {
+    font-size: 16px;
+  }
+
+  .bankcore-modal-header p {
+    font-size: 10px;
+  }
+
+  .bankcore-modal-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bankcore-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .bankcore-modal-cancel,
+  .bankcore-modal-create {
+    width: 100%;
+  }
+
+}
+
+/* ============================================================
+   OPEN NEW ACCOUNT BUTTON
+   ============================================================ */
+
+.open-account-button {
+  position: relative;
+  z-index: 20;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px 17px;
+
+  border: 0;
+  border-radius: 10px;
+
+  color: #ffffff;
+
+  background: linear-gradient(
+          135deg,
+          #596cf0,
+          #7186ff
+  );
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  box-shadow:
+          0 8px 20px
+          rgba(89, 108, 240, 0.25);
+
+  transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          opacity 0.2s ease;
+}
+
+.open-account-button:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+          0 11px 25px
+          rgba(89, 108, 240, 0.34);
+}
+
+.open-account-button:active {
+  transform: translateY(0);
+}
+
+.open-account-button:focus-visible {
+  outline: 2px solid #8fa0ff;
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   FIX — OPEN ACCOUNT BUTTON CLICK LAYER
+   ============================================================ */
+
+.page-header {
+  position: relative;
+  z-index: 100;
+}
+
+.open-account-button {
+  position: relative !important;
+  z-index: 101 !important;
+
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
