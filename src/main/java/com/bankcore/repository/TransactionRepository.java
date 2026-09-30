@@ -23,6 +23,11 @@ public interface TransactionRepository
             String transactionReference
     );
 
+
+    // ============================================================
+    // RECENT TRANSACTIONS
+    // ============================================================
+
     @Query("""
             SELECT t
             FROM Transaction t
@@ -33,6 +38,15 @@ public interface TransactionRepository
     List<Transaction> findRecentTransactionsByUserId(
             @Param("userId") Long userId
     );
+
+
+    // ============================================================
+    // FINANCIAL INSIGHTS
+    //
+    // These methods intentionally INCLUDE TRANSFERS.
+    //
+    // They represent money movement, not actual spending.
+    // ============================================================
 
     @Query("""
             SELECT COALESCE(SUM(t.amount), 0)
@@ -94,6 +108,156 @@ public interface TransactionRepository
             @Param("userId") Long userId
     );
 
+
+    // ============================================================
+    // ACTUAL SPENDING
+    //
+    // TRANSFER is explicitly excluded.
+    //
+    // These methods are used by spending analytics.
+    // ============================================================
+
+    @Query("""
+            SELECT COALESCE(SUM(t.amount), 0)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+            """)
+    BigDecimal getTotalSpendingByUserId(
+            @Param("userId") Long userId
+    );
+
+    @Query("""
+            SELECT COUNT(t)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+            """)
+    long countSpendingByUserId(
+            @Param("userId") Long userId
+    );
+
+    @Query("""
+            SELECT MAX(t.amount)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+            """)
+    BigDecimal getLargestSpendingTransactionByUserId(
+            @Param("userId") Long userId
+    );
+
+    @Query("""
+            SELECT MIN(t.amount)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+            """)
+    BigDecimal getSmallestSpendingTransactionByUserId(
+            @Param("userId") Long userId
+    );
+
+
+    // ============================================================
+    // ACTUAL SPENDING FOR DATE RANGE
+    // ============================================================
+
+    @Query("""
+            SELECT COALESCE(SUM(t.amount), 0)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+              AND t.createdAt >= :startDate
+              AND t.createdAt < :endDate
+            """)
+    BigDecimal getTotalSpendingBetweenDates(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+    @Query("""
+            SELECT COUNT(t)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+              AND t.createdAt >= :startDate
+              AND t.createdAt < :endDate
+            """)
+    long countSpendingBetweenDates(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+    @Query("""
+            SELECT MAX(t.amount)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+              AND t.createdAt >= :startDate
+              AND t.createdAt < :endDate
+            """)
+    BigDecimal getLargestSpendingBetweenDates(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+    @Query("""
+            SELECT MIN(t.amount)
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = com.bankcore.entity.TransactionStatus.COMPLETED
+              AND (
+                    t.category IS NULL
+                    OR t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+                  )
+              AND t.createdAt >= :startDate
+              AND t.createdAt < :endDate
+            """)
+    BigDecimal getSmallestSpendingBetweenDates(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+
+    // ============================================================
+    // ORIGINAL SENT TRANSACTION DATE-RANGE METHODS
+    //
+    // These intentionally INCLUDE TRANSFERS.
+    // They remain available for money-movement analytics.
+    // ============================================================
+
     @Query("""
             SELECT COALESCE(SUM(t.amount), 0)
             FROM Transaction t
@@ -149,6 +313,11 @@ public interface TransactionRepository
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
+
+
+    // ============================================================
+    // TRANSACTION SEARCH
+    // ============================================================
 
     @Query("""
             SELECT t
@@ -233,6 +402,11 @@ public interface TransactionRepository
             @Param("counterparty") String counterparty
     );
 
+
+    // ============================================================
+    // CATEGORY TRANSACTIONS
+    // ============================================================
+
     @Query("""
             SELECT t
             FROM Transaction t
@@ -247,6 +421,14 @@ public interface TransactionRepository
             @Param("category") TransactionCategory category
     );
 
+
+    // ============================================================
+    // CATEGORY SPENDING
+    //
+    // TRANSFER is excluded because this query represents
+    // actual spending categories.
+    // ============================================================
+
     @Query("""
             SELECT
                 t.category,
@@ -256,6 +438,7 @@ public interface TransactionRepository
             WHERE t.fromAccount.user.id = :userId
               AND t.status = :status
               AND t.category IS NOT NULL
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
             GROUP BY t.category
             ORDER BY SUM(t.amount) DESC
             """)
@@ -264,6 +447,7 @@ public interface TransactionRepository
             @Param("status") TransactionStatus status
     );
 
+
     @Query("""
             SELECT
                 COALESCE(SUM(t.amount), 0)
@@ -271,6 +455,7 @@ public interface TransactionRepository
             WHERE t.fromAccount.user.id = :userId
               AND t.status = :status
               AND t.category = :category
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
             """)
     BigDecimal findSpendingByCategory(
             @Param("userId") Long userId,
@@ -278,18 +463,25 @@ public interface TransactionRepository
             @Param("category") TransactionCategory category
     );
 
+
     @Query("""
             SELECT COUNT(t.id)
             FROM Transaction t
             WHERE t.fromAccount.user.id = :userId
               AND t.status = :status
               AND t.category = :category
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
             """)
     long countSpendingTransactionsByCategory(
             @Param("userId") Long userId,
             @Param("status") TransactionStatus status,
             @Param("category") TransactionCategory category
     );
+
+
+    // ============================================================
+    // UNCATEGORIZED TRANSACTIONS
+    // ============================================================
 
     @Query("""
             SELECT t
@@ -309,13 +501,12 @@ public interface TransactionRepository
             @Param("status") TransactionStatus status
     );
 
-    /*
-     * Category spending for a specific date range.
-     *
-     * These are intentionally separate queries instead of returning
-     * Object[] so Hibernate can map each aggregate directly to the
-     * correct Java type.
-     */
+
+    // ============================================================
+    // CATEGORY SPENDING FOR DATE RANGE
+    //
+    // TRANSFER is excluded.
+    // ============================================================
 
     @Query("""
             SELECT SUM(t.amount)
@@ -323,6 +514,7 @@ public interface TransactionRepository
             WHERE t.fromAccount.user.id = :userId
               AND t.status = :status
               AND t.category = :category
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
               AND t.createdAt >= :startDate
               AND t.createdAt < :endDate
             """)
@@ -334,12 +526,14 @@ public interface TransactionRepository
             @Param("endDate") LocalDateTime endDate
     );
 
+
     @Query("""
             SELECT COUNT(t.id)
             FROM Transaction t
             WHERE t.fromAccount.user.id = :userId
               AND t.status = :status
               AND t.category = :category
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
               AND t.createdAt >= :startDate
               AND t.createdAt < :endDate
             """)
@@ -351,21 +545,30 @@ public interface TransactionRepository
             @Param("endDate") LocalDateTime endDate
     );
 
+
+    // ============================================================
+    // CATEGORY SPENDING BETWEEN DATES
+    //
+    // Used by SpendingInsightsService.
+    // TRANSFER is excluded.
+    // ============================================================
+
     @Query("""
-        SELECT new com.bankcore.dto.CategorySpendingAggregate(
-            t.category,
-            SUM(t.amount),
-            COUNT(t.id)
-        )
-        FROM Transaction t
-        WHERE t.fromAccount.user.id = :userId
-          AND t.status = :status
-          AND t.category IS NOT NULL
-          AND t.createdAt >= :startDate
-          AND t.createdAt < :endDate
-        GROUP BY t.category
-        ORDER BY SUM(t.amount) DESC
-        """)
+            SELECT new com.bankcore.dto.CategorySpendingAggregate(
+                t.category,
+                SUM(t.amount),
+                COUNT(t.id)
+            )
+            FROM Transaction t
+            WHERE t.fromAccount.user.id = :userId
+              AND t.status = :status
+              AND t.category IS NOT NULL
+              AND t.category <> com.bankcore.entity.TransactionCategory.TRANSFER
+              AND t.createdAt >= :startDate
+              AND t.createdAt < :endDate
+            GROUP BY t.category
+            ORDER BY SUM(t.amount) DESC
+            """)
     List<com.bankcore.dto.CategorySpendingAggregate>
     findCategorySpendingBetweenDates(
             @Param("userId") Long userId,

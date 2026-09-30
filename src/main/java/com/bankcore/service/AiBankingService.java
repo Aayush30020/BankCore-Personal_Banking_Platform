@@ -220,6 +220,65 @@ public class AiBankingService {
 
 
                                 ========================================================
+                                SPENDING VS TRANSFERS
+                                ========================================================
+
+                                IMPORTANT BANKING DISTINCTION:
+
+                                A TRANSFER is a movement of money between accounts
+                                or parties.
+
+                                A TRANSFER is not automatically a spending expense.
+
+                                Therefore:
+
+                                TRANSFER
+                                = money movement
+
+                                FOOD, SHOPPING, BILLS, TRANSPORT,
+                                ENTERTAINMENT, HEALTH, EDUCATION and OTHER
+                                = spending categories.
+
+                                Never describe a TRANSFER as consumption,
+                                purchase spending, or an expense.
+
+                                When explaining spending concentration, treat
+                                TRANSFER separately from actual spending.
+
+                                Example:
+
+                                If the backend returns:
+
+                                TRANSFER = ₹51,200
+                                SHOPPING = ₹6,000
+                                FOOD = ₹4,100
+                                BILLS = ₹3,200
+
+                                Do NOT say:
+
+                                "Your highest spending category is TRANSFER."
+
+                                Instead say:
+
+                                "Your largest money movement was a transfer of
+                                ₹51,200. Among your actual spending categories,
+                                Shopping was the largest at ₹6,000."
+
+                                The distinction must be preserved even when
+                                TRANSFER has the largest numerical amount.
+
+                                Do not call a transfer "overspending."
+
+                                Do not call a transfer an expense.
+
+                                Do not call a transfer consumption.
+
+                                If the customer specifically asks about transfers,
+                                report TRANSFER normally using the appropriate
+                                transaction or financial-insights tool.
+
+
+                                ========================================================
                                 CATEGORY SPENDING
                                 ========================================================
 
@@ -235,6 +294,12 @@ public class AiBankingService {
                                 EDUCATION
                                 TRANSFER
                                 OTHER
+
+                                IMPORTANT:
+
+                                TRANSFER is a transaction category representing
+                                money movement. It must be distinguished from
+                                actual spending categories.
 
                                 Use getMyCategorySpending when the customer wants
                                 a category-wise breakdown without a date range.
@@ -267,6 +332,37 @@ public class AiBankingService {
                                 "What am I spending the most money on this month?"
                                 "Where is my spending concentrated?"
 
+                                IMPORTANT:
+
+                                The backend may include TRANSFER in its category
+                                data because TRANSFER is a valid transaction
+                                category.
+
+                                TRANSFER must NOT automatically be described as
+                                spending.
+
+                                When the tool returns TRANSFER as the largest
+                                category:
+
+                                1. Report the transfer as money movement if relevant.
+
+                                2. Identify the largest NON-TRANSFER category from
+                                   the returned category data when the customer
+                                   asks about actual spending.
+
+                                3. Clearly distinguish the two.
+
+                                Example:
+
+                                "Your largest money movement this month was
+                                ₹51,200 in transfers. Excluding transfers, your
+                                largest spending category was Shopping at ₹6,000."
+
+                                Do not invent a non-transfer value.
+
+                                Only use a non-transfer category value that is
+                                actually returned by the banking tool.
+
                                 High spending is NOT automatically overspending.
 
                                 Spending concentration is not the same thing as
@@ -294,6 +390,10 @@ public class AiBankingService {
                                 → getMyMonthlySpendingReport
 
                                 This asks about CATEGORY-LEVEL spending changes.
+
+                                When reporting category-level changes, preserve
+                                the distinction between TRANSFER and actual
+                                spending categories.
 
 
                                 ========================================================
@@ -535,6 +635,11 @@ public class AiBankingService {
 
                                 Preserve exact backend-provided values.
 
+                                Selecting the highest NON-TRANSFER category from
+                                backend-returned category data is an interpretation
+                                of the returned data, not an invented financial
+                                value.
+
                                 If a backend value is unavailable, clearly say
                                 that the value is unavailable.
 
@@ -600,6 +705,12 @@ public class AiBankingService {
 
                                 Preserve exact backend-provided financial values.
 
+                                When explaining spending, distinguish clearly between:
+
+                                - actual spending
+                                - transfers
+                                - total money movement
+
                                 When explaining budgets, distinguish clearly between:
 
                                 - budget limit
@@ -636,14 +747,10 @@ public class AiBankingService {
         return chatClient
                 .prompt()
                 .user(message)
-
-                // BankingTools contains the general banking tools.
-                // FinancialAlertTools explicitly exposes the alert tool.
                 .tools(
                         bankingTools,
                         financialAlertTools
                 )
-
                 .call()
                 .content();
     }

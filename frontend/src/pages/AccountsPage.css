@@ -1,124 +1,828 @@
-/* ============================================================
-   BANKCORE — CREATE ACCOUNT MODAL
-   ============================================================ */
+/* =========================================================
+   BankCore
+   Premium Accounts Page
+   ========================================================= */
 
-.bankcore-modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
+.accounts-page {
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 38px 36px 55px;
+    color: #f8fafc;
+}
 
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.accounts-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.accounts-heading {
+    min-width: 0;
+}
+
+.accounts-eyebrow {
+    margin-bottom: 9px;
+    color: #7589c7;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.18em;
+}
+
+.accounts-header h1 {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 32px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.accounts-header p {
+    margin: 9px 0 0;
+    color: #8190a8;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.accounts-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+.demo-data-button,
+.add-money-header-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 43px;
+    padding: 0 17px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease,
+            opacity 0.2s ease;
+}
+
+.demo-data-button {
+    border: 1px solid #26334a;
+    background: #121a29;
+    color: #dce5f5;
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.demo-data-button:hover:not(:disabled) {
+    background: #172235;
+    border-color: #354663;
+    transform: translateY(-1px);
+}
+
+.add-money-header-button {
+    border: 1px solid #4d73ef;
+    background: linear-gradient(
+            135deg,
+            #4b6ff4,
+            #5f72e9
+    );
+    color: #ffffff;
+
+    box-shadow:
+            0 8px 22px rgba(72, 102, 235, 0.20);
+}
+
+.add-money-header-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    box-shadow:
+            0 12px 28px rgba(72, 102, 235, 0.30);
+}
+
+.button-icon {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.demo-data-button:disabled,
+.add-money-header-button:disabled,
+.account-add-money-button:disabled,
+.confirm-add-money-button:disabled,
+.cancel-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.accounts-success,
+.accounts-error {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 0 0 22px;
+    padding: 13px 15px;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.accounts-success {
+    border: 1px solid rgba(52, 211, 153, 0.22);
+    background: rgba(16, 185, 129, 0.07);
+    color: #6ee7b7;
+}
+
+.accounts-error {
+    border: 1px solid rgba(248, 113, 113, 0.22);
+    background: rgba(239, 68, 68, 0.07);
+    color: #fca5a5;
+}
+
+.message-icon {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 24px;
+    width: 22px;
+    height: 22px;
 
-    background: rgba(3, 8, 20, 0.72);
+    flex-shrink: 0;
 
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: 800;
 }
 
+.accounts-success .message-icon {
+    background: rgba(52, 211, 153, 0.12);
+}
 
-/* ============================================================
-   MODAL
-   ============================================================ */
+.accounts-error .message-icon {
+    background: rgba(248, 113, 113, 0.12);
+}
 
-.bankcore-modal {
+.accounts-success button,
+.accounts-error button {
+    margin-left: auto;
+
+    border: none;
+    background: transparent;
+
+    color: inherit;
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+    opacity: 0.65;
+}
+
+.accounts-success button:hover,
+.accounts-error button:hover {
+    opacity: 1;
+}
+
+/* =========================================================
+   ACCOUNT GRID
+   ========================================================= */
+
+.accounts-grid {
     width: 100%;
-    max-width: 520px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+
+    align-items: stretch;
+}
+
+/* =========================================================
+   ACCOUNT CARD
+   ========================================================= */
+
+.account-card {
+    position: relative;
+
+    min-width: 0;
+    min-height: 310px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
 
     overflow: hidden;
 
-    background: #151d2d;
+    padding: 23px;
 
-    border: 1px solid #2d3b58;
-    border-radius: 18px;
+    border: 1px solid #202d42;
+    border-radius: 17px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(19, 29, 45, 0.98),
+                    rgba(11, 18, 29, 0.98)
+            );
 
     box-shadow:
-            0 25px 70px rgba(0, 0, 0, 0.45);
+            0 12px 32px rgba(0, 0, 0, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.025);
 
-    color: #edf2ff;
+    transition:
+            transform 0.25s ease,
+            border-color 0.25s ease,
+            box-shadow 0.25s ease;
 }
 
+.account-card:hover {
+    transform: translateY(-3px);
 
-/* ============================================================
-   MODAL HEADER
-   ============================================================ */
+    border-color: #31425e;
 
-.bankcore-modal-header {
+    box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.account-card-glow {
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    top: -120px;
+    right: -90px;
+
+    border-radius: 50%;
+
+    background: rgba(76, 101, 230, 0.12);
+
+    filter: blur(3px);
+
+    pointer-events: none;
+}
+
+.account-card.savings .account-card-glow {
+    background: rgba(58, 138, 255, 0.10);
+}
+
+.account-card.current .account-card-glow {
+    background: rgba(126, 91, 255, 0.12);
+}
+
+/* =========================================================
+   ACCOUNT CARD TOP
+   ========================================================= */
+
+.account-card-top {
+    position: relative;
+    z-index: 1;
+
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 
-    gap: 18px;
+    gap: 16px;
 
-    padding: 22px;
-
-    border-bottom: 1px solid #26334e;
+    margin-bottom: 26px;
 }
 
+.account-identity {
+    display: flex;
+    align-items: center;
+    gap: 13px;
 
-.bankcore-modal-icon {
-    width: 40px;
-    height: 40px;
+    min-width: 0;
+}
 
-    flex: 0 0 auto;
+.account-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #2b3b55;
+    border-radius: 12px;
+
+    background: #172236;
+
+    color: #9fb7ff;
+
+    font-size: 16px;
+    font-weight: 750;
+
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.account-icon.current {
+    background: rgba(117, 87, 255, 0.12);
+    border-color: rgba(133, 110, 255, 0.20);
+    color: #a99cff;
+}
+
+.account-icon.savings {
+    background: rgba(59, 130, 246, 0.11);
+    border-color: rgba(96, 165, 250, 0.18);
+    color: #8dbdff;
+}
+
+.account-type {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #8499bd;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+}
+
+.account-number {
+    color: #e9eef8;
+
+    font-size: 14px;
+    line-height: 1.3;
+    font-weight: 650;
+
+    letter-spacing: 0.035em;
+
+    overflow-wrap: anywhere;
+}
+
+.account-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    flex-shrink: 0;
+
+    padding: 5px 9px;
+
+    border: 1px solid rgba(52, 211, 153, 0.20);
+    border-radius: 999px;
+
+    background: rgba(16, 185, 129, 0.07);
+
+    color: #63dfad;
+
+    font-size: 9px;
+    font-weight: 750;
+
+    letter-spacing: 0.08em;
+}
+
+.status-dot {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #42d49b;
+
+    box-shadow:
+            0 0 8px rgba(66, 212, 155, 0.65);
+}
+
+.account-status.blocked,
+.account-status.suspended {
+    border-color: rgba(248, 113, 113, 0.20);
+    background: rgba(239, 68, 68, 0.07);
+    color: #fca5a5;
+}
+
+.account-status.blocked .status-dot,
+.account-status.suspended .status-dot {
+    background: #f87171;
+    box-shadow:
+            0 0 8px rgba(248, 113, 113, 0.55);
+}
+
+/* =========================================================
+   BALANCE
+   ========================================================= */
+
+.account-balance-section {
+    position: relative;
+    z-index: 1;
+
+    padding: 19px 0 21px;
+
+    border-top: 1px solid #1d293b;
+    border-bottom: 1px solid #1d293b;
+}
+
+.balance-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #6e7f99;
+
+    font-size: 11px;
+    font-weight: 550;
+
+    letter-spacing: 0.01em;
+}
+
+.account-balance {
+    display: block;
+
+    color: #f4f7fc;
+
+    font-size: 29px;
+    line-height: 1.15;
+    font-weight: 720;
+
+    letter-spacing: -0.035em;
+}
+
+/* =========================================================
+   ACCOUNT META
+   ========================================================= */
+
+.account-meta {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    padding: 17px 0 0;
+}
+
+.account-meta-item {
+    min-width: 0;
+}
+
+.account-meta-item span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #64748b;
+
+    font-size: 10px;
+    font-weight: 550;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.account-meta-item strong {
+    display: block;
+
+    color: #cbd5e1;
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
+/* =========================================================
+   CARD ACTION
+   ========================================================= */
+
+.account-add-money-button {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin-top: auto;
+    padding: 11px 14px;
+
+    border: 1px solid #294273;
+    border-radius: 9px;
+
+    background:
+            linear-gradient(
+                    180deg,
+                    rgba(57, 104, 224, 0.10),
+                    rgba(57, 104, 224, 0.06)
+            );
+
+    color: #8faeff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+}
+
+.account-add-money-button:hover:not(:disabled) {
+    background:
+            linear-gradient(
+                    135deg,
+                    #3e68dc,
+                    #526fe5
+            );
+
+    border-color: #5a7cf1;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+.action-arrow {
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.account-add-money-button:hover .action-arrow {
+    transform: translateX(3px);
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.accounts-loading-state {
+    min-height: 350px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    color: #75839a;
+}
+
+.accounts-loading-state p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.accounts-loading-spinner {
+    width: 25px;
+    height: 25px;
+
+    border: 2px solid #253248;
+    border-top-color: #637ef0;
+
+    border-radius: 50%;
+
+    animation:
+            accounts-spin 0.8s linear infinite;
+}
+
+@keyframes accounts-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-accounts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    border: 1px solid #202d42;
+    border-radius: 17px;
+
+    background: #0d1522;
+
+    text-align: center;
+}
+
+.empty-account-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #2b3b55;
+    border-radius: 14px;
+
+    background: #162136;
+
+    color: #8fa7ff;
+
+    font-size: 20px;
+}
+
+.empty-accounts h2 {
+    margin: 0 0 7px;
+
+    color: #f1f5f9;
+
+    font-size: 20px;
+}
+
+.empty-accounts p {
+    margin: 0;
+
+    color: #718096;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   MODAL OVERLAY
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 11px;
+    padding: 20px;
 
-    color: #8fa0ff;
+    background:
+            rgba(2, 6, 23, 0.78);
 
-    background: rgba(89, 108, 240, 0.12);
-
-    border: 1px solid rgba(89, 108, 240, 0.18);
+    backdrop-filter: blur(9px);
 }
 
+/* =========================================================
+   PREMIUM DARK MODAL
+   ========================================================= */
 
-.bankcore-modal-header h2 {
+.add-money-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 480px;
+
+    max-height: calc(100vh - 40px);
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
+
+    padding: 27px;
+
+    border: 1px solid #26344b;
+    border-radius: 20px;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    #121c2c 0%,
+                    #0d1522 100%
+            );
+
+    color: #f8fafc;
+
+    box-shadow:
+            0 30px 90px rgba(0, 0, 0, 0.50),
+            inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.add-money-modal::-webkit-scrollbar {
+    width: 5px;
+}
+
+.add-money-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.add-money-modal::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #29364b;
+}
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+.modal-eyebrow {
+    margin-bottom: 7px;
+
+    color: #7188c8;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+}
+
+.modal-heading h2 {
     margin: 0;
 
-    color: #f2f5ff;
+    color: #f5f7fb;
 
-    font-size: 18px;
-    font-weight: 750;
+    font-size: 25px;
+    line-height: 1.15;
+    font-weight: 700;
+
+    letter-spacing: -0.025em;
 }
 
+.modal-heading p {
+    margin: 7px 0 0;
 
-.bankcore-modal-header p {
-    margin: 5px 0 0;
-
-    color: #8190ab;
+    color: #75849b;
 
     font-size: 12px;
     line-height: 1.5;
 }
 
-
-/* ============================================================
-   CLOSE BUTTON
-   ============================================================ */
-
-.bankcore-modal-close {
-    width: 34px;
-    height: 34px;
-
-    flex: 0 0 auto;
-
+.modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #34435f;
-    border-radius: 9px;
+    width: 35px;
+    height: 35px;
 
-    color: #8c9ab3;
+    flex-shrink: 0;
 
-    background: #111827;
+    border: 1px solid #28364b;
+    border-radius: 10px;
+
+    background: #182335;
+
+    color: #a8b5c9;
+
+    font-size: 21px;
+    line-height: 1;
 
     cursor: pointer;
 
@@ -128,342 +832,353 @@
             border-color 0.2s ease;
 }
 
-
-.bankcore-modal-close:hover:not(:disabled) {
-    background: #1b263b;
-    border-color: #465b84;
-    color: #edf2ff;
+.modal-close:hover:not(:disabled) {
+    background: #202d42;
+    border-color: #384a64;
+    color: #ffffff;
 }
 
+/* =========================================================
+   SELECTED ACCOUNT
+   ========================================================= */
 
-.bankcore-modal-close:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
+.selected-account-card {
+    padding: 16px;
 
+    margin-bottom: 21px;
 
-/* ============================================================
-   MODAL BODY
-   ============================================================ */
-
-.bankcore-modal-body {
-    padding: 22px;
-}
-
-
-.bankcore-form-group {
-    margin-bottom: 18px;
-}
-
-
-.bankcore-form-group > label {
-    display: block;
-
-    margin-bottom: 9px;
-
-    color: #c8d1e3;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
-/* ============================================================
-   ACCOUNT TYPE OPTIONS
-   ============================================================ */
-
-.bankcore-account-type-options {
-    display: grid;
-    gap: 10px;
-}
-
-
-.bankcore-account-type-option {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    padding: 13px;
-
-    text-align: left;
-
-    border: 1px solid #2d3b58;
-    border-radius: 12px;
-
-    background: #111827;
-
-    color: #edf2ff;
-
-    cursor: pointer;
-
-    transition:
-            border-color 0.2s ease,
-            background 0.2s ease,
-            box-shadow 0.2s ease;
-}
-
-
-.bankcore-account-type-option:hover:not(:disabled) {
-    border-color: #465b87;
-    background: #172137;
-}
-
-
-.bankcore-account-type-option.selected {
-    border-color: #596cf0;
-
-    background: rgba(89, 108, 240, 0.10);
-
-    box-shadow:
-            0 0 0 1px rgba(89, 108, 240, 0.10);
-}
-
-
-.bankcore-account-type-option:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-.bankcore-account-type-icon {
-    width: 36px;
-    height: 36px;
-
-    flex: 0 0 auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-right: 11px;
-
-    border-radius: 9px;
-
-    color: #8fa0ff;
-
-    background: rgba(89, 108, 240, 0.11);
-}
-
-
-.bankcore-account-type-content {
-    min-width: 0;
-}
-
-
-.bankcore-account-type-content strong {
-    display: block;
-
-    color: #e8edfa;
-
-    font-size: 13px;
-}
-
-
-.bankcore-account-type-content span {
-    display: block;
-
-    margin-top: 3px;
-
-    color: #7887a2;
-
-    font-size: 10px;
-    line-height: 1.4;
-}
-
-
-.bankcore-radio {
-    width: 16px;
-    height: 16px;
-
-    flex: 0 0 auto;
-
-    margin-left: auto;
-
-    border: 2px solid #4b5b79;
-    border-radius: 50%;
-
-    transition:
-            border-color 0.2s ease,
-            background 0.2s ease,
-            box-shadow 0.2s ease;
-}
-
-
-.bankcore-account-type-option.selected .bankcore-radio {
-    border-color: #7186ff;
+    border: 1px solid #26364e;
+    border-radius: 13px;
 
     background:
-            radial-gradient(
-                    circle,
-                    #7186ff 0 4px,
-                    transparent 4.5px
+            linear-gradient(
+                    135deg,
+                    rgba(27, 42, 65, 0.90),
+                    rgba(17, 28, 44, 0.90)
             );
-
-    box-shadow:
-            0 0 0 3px rgba(89, 108, 240, 0.08);
 }
 
-
-/* ============================================================
-   ZERO BALANCE
-   ============================================================ */
-
-.bankcore-zero-balance {
+.selected-account-top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+
     gap: 11px;
-
-    padding: 14px;
-
-    border: 1px solid #293752;
-    border-radius: 11px;
-
-    background: #111827;
 }
 
-
-.bankcore-zero-balance-icon {
-    width: 30px;
-    height: 30px;
-
-    flex: 0 0 auto;
-
+.selected-account-icon {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    width: 38px;
+    height: 38px;
 
-    color: #7f91ff;
+    flex-shrink: 0;
 
-    background: rgba(89, 108, 240, 0.10);
-}
+    border: 1px solid #33486c;
+    border-radius: 10px;
 
+    background: #1a2941;
 
-.bankcore-zero-balance strong {
-    display: block;
+    color: #94aaff;
 
-    color: #dbe2f2;
-
-    font-size: 12px;
-}
-
-
-.bankcore-zero-balance span {
-    display: block;
-
-    margin-top: 2px;
-
-    color: #edf2ff;
-
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 750;
 }
 
+.selected-account-top > div:nth-child(2) {
+    min-width: 0;
 
-.bankcore-zero-balance p {
-    margin: 5px 0 0;
-
-    color: #74839e;
-
-    font-size: 10px;
-    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
+.selected-account-top span {
+    color: #7589a8;
 
-/* ============================================================
-   ERROR
-   ============================================================ */
+    font-size: 9px;
+    font-weight: 750;
 
-.bankcore-create-error {
+    letter-spacing: 0.10em;
+
+    text-transform: uppercase;
+}
+
+.selected-account-top strong {
+    color: #e5ebf5;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    letter-spacing: 0.025em;
+
+    overflow-wrap: anywhere;
+}
+
+.selected-active {
+    margin-left: auto;
+
+    padding: 5px 8px;
+
+    border: 1px solid rgba(52, 211, 153, 0.20);
+    border-radius: 999px;
+
+    background: rgba(16, 185, 129, 0.07);
+
+    color: #5ee3aa !important;
+
+    font-size: 8px !important;
+}
+
+.selected-account-balance {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 15px;
+    padding-top: 14px;
+
+    border-top: 1px solid #223148;
+}
+
+.selected-account-balance span {
+    color: #667791;
+
+    font-size: 10px;
+}
+
+.selected-account-balance strong {
+    color: #f1f5f9;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.add-money-form {
     display: flex;
     flex-direction: column;
 
-    gap: 3px;
+    gap: 17px;
+}
 
-    margin-top: 14px;
-    padding: 12px 13px;
+.add-money-form label {
+    display: flex;
+    flex-direction: column;
 
-    border: 1px solid #63343d;
+    gap: 7px;
+}
+
+.form-label {
+    color: #cbd5e1;
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.add-money-form input {
+    width: 100%;
+    box-sizing: border-box;
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid #2b3a51;
     border-radius: 10px;
 
-    background: #24171d;
+    outline: none;
+
+    background: #101a29;
+    color: #f1f5f9;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition:
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
 }
 
-
-.bankcore-create-error strong {
-    color: #ffb4bd;
-    font-size: 11px;
+.add-money-form input::placeholder {
+    color: #55657d;
 }
 
+.add-money-form input:hover {
+    border-color: #34465f;
+}
 
-.bankcore-create-error span {
-    color: #c9838d;
+.add-money-form input:focus {
+    border-color: #526fe2;
+
+    background: #121e30;
+
+    box-shadow:
+            0 0 0 3px rgba(82, 111, 226, 0.10);
+}
+
+/* Remove browser number controls */
+
+.add-money-form input[type="number"]::-webkit-inner-spin-button,
+.add-money-form input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+.add-money-form input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* =========================================================
+   AMOUNT FIELD
+   ========================================================= */
+
+.amount-input-wrapper {
+    display: flex;
+    align-items: center;
+
+    height: 46px;
+
+    border: 1px solid #2b3a51;
+    border-radius: 10px;
+
+    background: #101a29;
+
+    overflow: hidden;
+
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+}
+
+.amount-input-wrapper:focus-within {
+    border-color: #526fe2;
+
+    background: #121e30;
+
+    box-shadow:
+            0 0 0 3px rgba(82, 111, 226, 0.10);
+}
+
+.currency-symbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+
+    color: #9aa9bf;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.amount-input-wrapper input {
+    height: 44px;
+
+    padding: 0 12px 0 0;
+
+    border: none;
+    border-radius: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+}
+
+.amount-input-wrapper input:focus {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.field-hint {
+    color: #596a82;
 
     font-size: 10px;
-    line-height: 1.45;
+    font-weight: 500;
 }
 
+/* =========================================================
+   MODAL MESSAGES
+   ========================================================= */
 
-/* ============================================================
-   SUCCESS
-   ============================================================ */
-
-.bankcore-create-success {
+.modal-error,
+.modal-success {
     display: flex;
     align-items: center;
     gap: 8px;
 
-    margin-top: 14px;
-    padding: 12px 13px;
+    padding: 10px 12px;
 
-    border: 1px solid #28563c;
-    border-radius: 10px;
-
-    color: #86efac;
-
-    background: rgba(34, 197, 94, 0.08);
+    border-radius: 9px;
 
     font-size: 11px;
-    font-weight: 600;
+    line-height: 1.4;
 }
 
+.modal-error {
+    border: 1px solid rgba(248, 113, 113, 0.20);
+    background: rgba(239, 68, 68, 0.08);
+    color: #fca5a5;
+}
 
-/* ============================================================
-   MODAL FOOTER
-   ============================================================ */
+.modal-success {
+    border: 1px solid rgba(52, 211, 153, 0.20);
+    background: rgba(16, 185, 129, 0.08);
+    color: #6ee7b7;
+}
 
-.bankcore-modal-footer {
+.modal-error span,
+.modal-success span {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
+
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   MODAL ACTIONS
+   ========================================================= */
+
+.modal-actions {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
 
     gap: 10px;
 
-    padding: 16px 22px;
-
-    border-top: 1px solid #26334e;
-
-    background: #121a29;
+    margin-top: 3px;
 }
 
+.cancel-button,
+.confirm-add-money-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
-/* ============================================================
-   CANCEL
-   ============================================================ */
+    height: 45px;
 
-.bankcore-modal-cancel {
-    padding: 10px 15px;
+    border-radius: 10px;
 
-    border: 1px solid #34435f;
-    border-radius: 9px;
-
-    background: #151d2d;
-
-    color: #a4b0c7;
+    font-family: inherit;
 
     font-size: 12px;
     font-weight: 650;
@@ -471,228 +1186,179 @@
     cursor: pointer;
 
     transition:
+            transform 0.2s ease,
             background 0.2s ease,
             border-color 0.2s ease,
-            color 0.2s ease;
+            box-shadow 0.2s ease,
+            opacity 0.2s ease;
 }
 
+.cancel-button {
+    border: 1px solid #29384f;
 
-.bankcore-modal-cancel:hover:not(:disabled) {
-    background: #1b263b;
-    border-color: #465b7e;
-    color: #edf2ff;
+    background: #172235;
+
+    color: #a8b5c8;
 }
 
-
-.bankcore-modal-cancel:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+.cancel-button:hover:not(:disabled) {
+    background: #1d2b40;
+    border-color: #384b67;
+    color: #e2e8f0;
 }
 
+.confirm-add-money-button {
+    border: 1px solid #536fe1;
 
-/* ============================================================
-   CREATE ACCOUNT BUTTON
-   ============================================================ */
+    background:
+            linear-gradient(
+                    135deg,
+                    #466be1,
+                    #5c70e5
+            );
 
-.bankcore-modal-create {
-    display: inline-flex;
+    color: #ffffff;
+
+    box-shadow:
+            0 8px 22px rgba(70, 107, 225, 0.18);
+}
+
+.confirm-add-money-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    box-shadow:
+            0 12px 28px rgba(70, 107, 225, 0.28);
+}
+
+.confirm-add-money-button:disabled {
+    background: #273650;
+    border-color: #33445e;
+}
+
+/* =========================================================
+   BUTTON SPINNER
+   ========================================================= */
+
+.button-spinner {
+    width: 13px;
+    height: 13px;
+
+    border: 2px solid rgba(255, 255, 255, 0.30);
+    border-top-color: #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+            accounts-spin 0.7s linear infinite;
+}
+
+/* =========================================================
+   MODAL SECURITY NOTE
+   ========================================================= */
+
+.modal-security-note {
+    display: flex;
     align-items: center;
     justify-content: center;
 
     gap: 7px;
 
-    min-width: 145px;
+    margin-top: 17px;
+    padding-top: 15px;
 
-    padding: 10px 16px;
+    border-top: 1px solid #1d2a3e;
 
-    border: 0;
-    border-radius: 9px;
+    color: #596981;
 
-    color: #ffffff;
+    font-size: 9px;
+    line-height: 1.4;
 
-    background:
-            linear-gradient(
-                    135deg,
-                    #596cf0,
-                    #7186ff
-            );
-
-    font-size: 12px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    box-shadow:
-            0 6px 16px rgba(89, 108, 240, 0.20);
-
-    transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            opacity 0.2s ease;
+    text-align: center;
 }
 
-
-.bankcore-modal-create:hover:not(:disabled) {
-    transform: translateY(-1px);
-
-    box-shadow:
-            0 9px 20px rgba(89, 108, 240, 0.28);
-}
-
-
-.bankcore-modal-create:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-
-/* ============================================================
-   OPEN NEW ACCOUNT BUTTON
-   ============================================================ */
-
-.open-account-button {
-    position: relative;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-
-    padding: 11px 17px;
-
-    border: 0;
-    border-radius: 10px;
-
-    color: #ffffff;
-
-    background:
-            linear-gradient(
-                    135deg,
-                    #596cf0,
-                    #7186ff
-            );
-
-    font-family: inherit;
-
+.modal-security-note span {
+    color: #7189d1;
     font-size: 13px;
-    font-weight: 700;
-
-    white-space: nowrap;
-
-    cursor: pointer;
-
-    pointer-events: auto;
-
-    box-shadow:
-            0 8px 20px rgba(89, 108, 240, 0.25);
-
-    transition:
-            transform 0.2s ease,
-            box-shadow 0.2s ease,
-            opacity 0.2s ease;
 }
 
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-.open-account-button:hover {
-    transform: translateY(-1px);
+@media (max-width: 950px) {
 
-    box-shadow:
-            0 11px 25px rgba(89, 108, 240, 0.34);
-}
-
-
-.open-account-button:active {
-    transform: translateY(0);
-}
-
-
-.open-account-button:focus-visible {
-    outline: 2px solid #8fa0ff;
-    outline-offset: 3px;
-}
-
-
-/* ============================================================
-   SPINNER
-   ============================================================ */
-
-.bankcore-spin {
-    animation:
-            bankcore-modal-spin 1s linear infinite;
-}
-
-
-@keyframes bankcore-modal-spin {
-
-    from {
-        transform: rotate(0deg);
+    .accounts-page {
+        padding: 30px 25px 45px;
     }
 
-    to {
-        transform: rotate(360deg);
+    .accounts-grid {
+        grid-template-columns: 1fr;
     }
 
 }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+@media (max-width: 650px) {
 
-@media (max-width: 600px) {
-
-    .bankcore-modal-overlay {
-        padding: 14px;
+    .accounts-page {
+        padding: 23px 16px 35px;
     }
 
-    .bankcore-modal {
-        max-width: 100%;
-        border-radius: 15px;
+    .accounts-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
     }
 
-    .bankcore-modal-header {
-        padding: 18px;
+    .accounts-header h1 {
+        font-size: 28px;
     }
 
-    .bankcore-modal-body {
-        padding: 18px;
-    }
-
-    .bankcore-modal-footer {
-        padding: 14px 18px;
-    }
-
-}
-
-
-@media (max-width: 420px) {
-
-    .bankcore-modal-header {
-        gap: 10px;
-    }
-
-    .bankcore-modal-header h2 {
-        font-size: 16px;
-    }
-
-    .bankcore-modal-header p {
-        font-size: 10px;
-    }
-
-    .bankcore-modal-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    .bankcore-modal-footer {
-        flex-direction: column-reverse;
-    }
-
-    .bankcore-modal-cancel,
-    .bankcore-modal-create {
+    .accounts-header-actions {
         width: 100%;
+    }
+
+    .demo-data-button,
+    .add-money-header-button {
+        flex: 1;
+        padding: 0 12px;
+    }
+
+    .account-card {
+        min-height: 300px;
+        padding: 20px;
+    }
+
+    .account-balance {
+        font-size: 26px;
+    }
+
+    .account-status {
+        font-size: 8px;
+    }
+
+    .add-money-modal {
+        max-height: calc(100vh - 28px);
+        padding: 22px;
+        border-radius: 17px;
+    }
+
+    .modal-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .cancel-button,
+    .confirm-add-money-button {
+        width: 100%;
+    }
+
+    .selected-account-balance {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
     }
 
 }

@@ -22,11 +22,6 @@ public class SpendingComparisonService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
 
-
-    // ============================================================
-    // COMPARE TWO SPENDING PERIODS
-    // ============================================================
-
     @Transactional(readOnly = true)
     public SpendingComparisonResponse compareSpending(
             LocalDate currentPeriodStart,
@@ -51,11 +46,6 @@ public class SpendingComparisonService {
 
         Long userId = user.getId();
 
-
-        // ========================================================
-        // CURRENT PERIOD
-        // ========================================================
-
         LocalDateTime currentStartDateTime =
                 currentPeriodStart.atStartOfDay();
 
@@ -65,23 +55,18 @@ public class SpendingComparisonService {
                         .atStartOfDay();
 
         BigDecimal currentPeriodSpent =
-                transactionRepository.getTotalSentBetweenDates(
+                transactionRepository.getTotalSpendingBetweenDates(
                         userId,
                         currentStartDateTime,
                         currentEndDateTime
                 );
 
         long currentPeriodTransactionCount =
-                transactionRepository.countSentBetweenDates(
+                transactionRepository.countSpendingBetweenDates(
                         userId,
                         currentStartDateTime,
                         currentEndDateTime
                 );
-
-
-        // ========================================================
-        // PREVIOUS PERIOD
-        // ========================================================
 
         LocalDateTime previousStartDateTime =
                 previousPeriodStart.atStartOfDay();
@@ -92,32 +77,22 @@ public class SpendingComparisonService {
                         .atStartOfDay();
 
         BigDecimal previousPeriodSpent =
-                transactionRepository.getTotalSentBetweenDates(
+                transactionRepository.getTotalSpendingBetweenDates(
                         userId,
                         previousStartDateTime,
                         previousEndDateTime
                 );
 
         long previousPeriodTransactionCount =
-                transactionRepository.countSentBetweenDates(
+                transactionRepository.countSpendingBetweenDates(
                         userId,
                         previousStartDateTime,
                         previousEndDateTime
                 );
 
-
-        // ========================================================
-        // CALCULATE DIFFERENCE
-        // ========================================================
-
         BigDecimal difference =
                 currentPeriodSpent
                         .subtract(previousPeriodSpent);
-
-
-        // ========================================================
-        // CALCULATE PERCENTAGE CHANGE
-        // ========================================================
 
         BigDecimal percentageChange =
                 calculatePercentageChange(
@@ -125,48 +100,24 @@ public class SpendingComparisonService {
                         previousPeriodSpent
                 );
 
-
-        // ========================================================
-        // RETURN RESULT
-        // ========================================================
-
         return new SpendingComparisonResponse(
                 currentPeriodStart,
                 currentPeriodEnd,
                 currentPeriodSpent,
                 currentPeriodTransactionCount,
-
                 previousPeriodStart,
                 previousPeriodEnd,
                 previousPeriodSpent,
                 previousPeriodTransactionCount,
-
                 difference,
                 percentageChange
         );
     }
 
-
-    // ============================================================
-    // PERCENTAGE CHANGE
-    // ============================================================
-
     private BigDecimal calculatePercentageChange(
             BigDecimal currentValue,
             BigDecimal previousValue
     ) {
-
-        /*
-         * Percentage change formula:
-         *
-         * ((current - previous) / previous) * 100
-         *
-         * If the previous period is zero, percentage change
-         * cannot be mathematically calculated.
-         *
-         * Returning null allows the AI to explain that there
-         * was no previous spending baseline.
-         */
 
         if (previousValue == null ||
                 previousValue.compareTo(BigDecimal.ZERO) == 0) {
@@ -184,11 +135,6 @@ public class SpendingComparisonService {
                 .multiply(BigDecimal.valueOf(100))
                 .setScale(2, RoundingMode.HALF_UP);
     }
-
-
-    // ============================================================
-    // VALIDATE DATE RANGE
-    // ============================================================
 
     private void validateDates(
             LocalDate startDate,
@@ -214,11 +160,6 @@ public class SpendingComparisonService {
             );
         }
     }
-
-
-    // ============================================================
-    // GET AUTHENTICATED USER
-    // ============================================================
 
     private User getAuthenticatedUser() {
 

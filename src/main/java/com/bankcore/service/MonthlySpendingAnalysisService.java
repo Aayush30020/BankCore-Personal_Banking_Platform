@@ -41,46 +41,33 @@ public class MonthlySpendingAnalysisService {
         Long userId = user.getId();
 
         BigDecimal totalSpent =
-                transactionRepository.getTotalSentBetweenDates(
+                transactionRepository.getTotalSpendingBetweenDates(
                         userId,
                         startDateTime,
                         endDateTime
                 );
 
         long transactionCount =
-                transactionRepository.countSentBetweenDates(
+                transactionRepository.countSpendingBetweenDates(
                         userId,
                         startDateTime,
                         endDateTime
                 );
 
         BigDecimal largestTransactionAmount =
-                transactionRepository.getLargestSentBetweenDates(
+                transactionRepository.getLargestSpendingBetweenDates(
                         userId,
                         startDateTime,
                         endDateTime
                 );
 
         BigDecimal smallestTransactionAmount =
-                transactionRepository.getSmallestSentBetweenDates(
+                transactionRepository.getSmallestSpendingBetweenDates(
                         userId,
                         startDateTime,
                         endDateTime
                 );
 
-        BigDecimal averageTransactionAmount =
-                calculateAverage(
-                        totalSpent,
-                        transactionCount
-                );
-
-        /*
-         * If there are no transactions in the selected period,
-         * MAX and MIN return null.
-         *
-         * Returning zero makes the response easier for the AI
-         * to understand and prevents null financial values.
-         */
         if (largestTransactionAmount == null) {
             largestTransactionAmount = BigDecimal.ZERO;
         }
@@ -88,6 +75,12 @@ public class MonthlySpendingAnalysisService {
         if (smallestTransactionAmount == null) {
             smallestTransactionAmount = BigDecimal.ZERO;
         }
+
+        BigDecimal averageTransactionAmount =
+                calculateAverage(
+                        totalSpent,
+                        transactionCount
+                );
 
         return new MonthlySpendingAnalysisResponse(
                 startDate,
@@ -99,11 +92,6 @@ public class MonthlySpendingAnalysisService {
                 smallestTransactionAmount
         );
     }
-
-
-    // ============================================================
-    // CALCULATE AVERAGE
-    // ============================================================
 
     private BigDecimal calculateAverage(
             BigDecimal totalSpent,
@@ -120,11 +108,6 @@ public class MonthlySpendingAnalysisService {
                 RoundingMode.HALF_UP
         );
     }
-
-
-    // ============================================================
-    // VALIDATE DATE RANGE
-    // ============================================================
 
     private void validateDates(
             LocalDate startDate,
@@ -149,11 +132,6 @@ public class MonthlySpendingAnalysisService {
             );
         }
     }
-
-
-    // ============================================================
-    // GET AUTHENTICATED USER
-    // ============================================================
 
     private User getAuthenticatedUser() {
 

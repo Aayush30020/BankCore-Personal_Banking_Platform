@@ -28,16 +28,24 @@ public class SpendingAnalysisService {
         Long userId = user.getId();
 
         BigDecimal totalSpent =
-                transactionRepository.getTotalSentByUserId(userId);
+                transactionRepository.getTotalSpendingByUserId(userId);
 
         long transactionCount =
-                transactionRepository.countSentByUserId(userId);
+                transactionRepository.countSpendingByUserId(userId);
 
         BigDecimal largestTransactionAmount =
-                transactionRepository.getLargestSentTransactionByUserId(userId);
+                transactionRepository.getLargestSpendingTransactionByUserId(userId);
 
         BigDecimal smallestTransactionAmount =
-                transactionRepository.getSmallestSentTransactionByUserId(userId);
+                transactionRepository.getSmallestSpendingTransactionByUserId(userId);
+
+        if (largestTransactionAmount == null) {
+            largestTransactionAmount = BigDecimal.ZERO;
+        }
+
+        if (smallestTransactionAmount == null) {
+            smallestTransactionAmount = BigDecimal.ZERO;
+        }
 
         BigDecimal averageTransactionAmount =
                 calculateAverage(
@@ -58,11 +66,6 @@ public class SpendingAnalysisService {
         );
     }
 
-
-    // ============================================================
-    // CALCULATE AVERAGE TRANSACTION AMOUNT
-    // ============================================================
-
     private BigDecimal calculateAverage(
             BigDecimal totalSpent,
             long transactionCount
@@ -78,11 +81,6 @@ public class SpendingAnalysisService {
                 RoundingMode.HALF_UP
         );
     }
-
-
-    // ============================================================
-    // GET AUTHENTICATED USER
-    // ============================================================
 
     private User getAuthenticatedUser() {
 

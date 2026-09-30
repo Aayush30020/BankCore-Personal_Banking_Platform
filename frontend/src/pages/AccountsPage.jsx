@@ -1,1419 +1,969 @@
-import {
-    CreditCard,
-    WalletCards,
-    CheckCircle2,
-    CalendarDays,
-    ShieldCheck,
-    ArrowUpRight,
-    Plus,
-    X,
-    Loader2,
-    Building2,
-} from "lucide-react";
-
-import {
-    useEffect,
-    useState,
-} from "react";
-
-import {
-    useNavigate,
-} from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import api from "../api";
 import "./AccountsPage.css";
 
-// ============================================================
-// ACCOUNTS PAGE
-// ============================================================
+const DEMO_BUDGETS = [
+    {
+        category: "FOOD",
+        monthlyLimit: 8000,
+    },
+    {
+        category: "SHOPPING",
+        monthlyLimit: 10000,
+    },
+    {
+        category: "BILLS",
+        monthlyLimit: 6000,
+    },
+    {
+        category: "TRANSPORT",
+        monthlyLimit: 5000,
+    },
+    {
+        category: "ENTERTAINMENT",
+        monthlyLimit: 3000,
+    },
+    {
+        category: "HEALTH",
+        monthlyLimit: 3000,
+    },
+    {
+        category: "EDUCATION",
+        monthlyLimit: 2000,
+    },
+];
+
+const DEMO_SAVINGS_GOALS = [
+    {
+        name: "Emergency Fund",
+        targetAmount: 100000,
+        currentAmount: 40000,
+        monthsFromNow: 2,
+    },
+    {
+        name: "Laptop",
+        targetAmount: 80000,
+        currentAmount: 25000,
+        monthsFromNow: 6,
+    },
+    {
+        name: "Vacation Fund",
+        targetAmount: 50000,
+        currentAmount: 15000,
+        monthsFromNow: 3,
+    },
+];
+
+function getFutureDate(monthsFromNow) {
+    const date = new Date();
+
+    date.setMonth(
+        date.getMonth() + monthsFromNow
+    );
+
+    return date.toISOString().split("T")[0];
+}
 
 function AccountsPage() {
-
-    const navigate = useNavigate();
-
-
-    // ==========================================================
-    // ACCOUNT STATE
-    // ==========================================================
-
     const [accounts, setAccounts] = useState([]);
-
-    const [totalBalance, setTotalBalance] = useState(0);
-
     const [loading, setLoading] = useState(true);
 
+    const [showAddMoney, setShowAddMoney] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState(null);
+
+    const [amount, setAmount] = useState("");
+    const [description, setDescription] = useState("");
+
+    const [addingMoney, setAddingMoney] = useState(false);
+    const [generatingDemo, setGeneratingDemo] = useState(false);
+
+    const [message, setMessage] = useState("");
     const [error, setError] = useState("");
 
-
-    // ==========================================================
-    // CREATE ACCOUNT STATE
-    // ==========================================================
-
-    const [showCreateModal, setShowCreateModal] =
-        useState(false);
-
-    const [accountType, setAccountType] =
-        useState("SAVINGS");
-
-    const [creatingAccount, setCreatingAccount] =
-        useState(false);
-
-    const [createError, setCreateError] =
-        useState("");
-
-    const [createSuccess, setCreateSuccess] =
-        useState("");
-
-
-    // ==========================================================
-    // LOAD ACCOUNTS
-    // ==========================================================
+    useEffect(() => {
+        loadAccounts();
+    }, []);
 
     const loadAccounts = async () => {
-
         try {
-
             setLoading(true);
             setError("");
 
+            const response = await api.get("/accounts");
 
-            const response = await api.get(
-                "/accounts/me"
-            );
-
-
-            const loadedAccounts =
-                Array.isArray(response.data)
-                    ? response.data
-                    : response.data?.accounts || [];
-
-
-            setAccounts(
-                loadedAccounts
-            );
-
-
-            const calculatedBalance =
-                loadedAccounts.reduce(
-                    (total, account) =>
-                        total +
-                        Number(
-                            account.balance || 0
-                        ),
-                    0
-                );
-
-
-            setTotalBalance(
-                Number(
-                    response.data?.totalBalance ??
-                    calculatedBalance
-                )
-            );
-
-        } catch (error) {
-
+            setAccounts(response.data || []);
+        } catch (err) {
             console.error(
                 "Failed to load accounts:",
-                error
+                err
             );
-
-
-            if (
-                error.response?.status === 401
-            ) {
-
-                navigate(
-                    "/login",
-                    {
-                        replace: true,
-                    }
-                );
-
-                return;
-            }
-
 
             setError(
-                error.response?.data?.message ||
-                "Unable to load your account information."
+                err.response?.data?.message ||
+                "Unable to load your accounts."
             );
-
         } finally {
-
             setLoading(false);
-
         }
     };
 
-
-    // ==========================================================
-    // INITIAL LOAD
-    // ==========================================================
-
-    useEffect(() => {
-
-        loadAccounts();
-
-    }, []);
-
-
-    // ==========================================================
-    // OPEN CREATE MODAL
-    // ==========================================================
-
-    const openCreateModal = () => {
-
-        if (creatingAccount) {
-            return;
-        }
-
-
-        setAccountType("SAVINGS");
-
-        setCreateError("");
-
-        setCreateSuccess("");
-
-        setShowCreateModal(true);
-
+    const openAddMoney = (account) => {
+        setSelectedAccount(account);
+        setAmount("");
+        setDescription("");
+        setMessage("");
+        setError("");
+        setShowAddMoney(true);
     };
 
+    const closeAddMoney = () => {
+        if (addingMoney) return;
 
-    // ==========================================================
-    // CLOSE CREATE MODAL
-    // ==========================================================
-
-    const closeCreateModal = () => {
-
-        if (creatingAccount) {
-            return;
-        }
-
-
-        setShowCreateModal(false);
-
-        setCreateError("");
-
-        setCreateSuccess("");
-
+        setShowAddMoney(false);
+        setSelectedAccount(null);
+        setAmount("");
+        setDescription("");
+        setMessage("");
+        setError("");
     };
 
+    const handleAddMoney = async (event) => {
+        event.preventDefault();
 
-    // ==========================================================
-    // CREATE ACCOUNT
-    // ==========================================================
+        if (!selectedAccount) return;
 
-    const createAccount = async () => {
+        const numericAmount = Number(amount);
 
-        if (creatingAccount) {
+        if (!numericAmount || numericAmount <= 0) {
+            setError(
+                "Enter an amount greater than ₹0."
+            );
             return;
         }
 
+        if (numericAmount > 1000000) {
+            setError(
+                "A single demo deposit cannot exceed ₹10,00,000."
+            );
+            return;
+        }
 
         try {
-
-            setCreatingAccount(true);
-
-            setCreateError("");
-
-            setCreateSuccess("");
-
+            setAddingMoney(true);
+            setError("");
+            setMessage("");
 
             const response = await api.post(
-                "/accounts",
+                "/demo-banking/deposit",
                 {
-                    type: accountType,
+                    accountId: selectedAccount.id,
+                    amount: numericAmount,
+                    description:
+                        description.trim() ||
+                        "Demo account funding",
                 }
             );
 
-
-            console.log(
-                "Account created successfully:",
-                response.data
+            setMessage(
+                response.data?.message ||
+                "Money added successfully."
             );
-
-
-            setCreateSuccess(
-                "Your new account has been created successfully."
-            );
-
 
             await loadAccounts();
 
-
             setTimeout(() => {
+                closeAddMoney();
+            }, 900);
 
-                setShowCreateModal(false);
-
-                setCreateSuccess("");
-
-            }, 1200);
-
-        } catch (error) {
-
+        } catch (err) {
             console.error(
-                "Failed to create account:",
-                error
+                "Failed to add money:",
+                err
             );
 
-
-            if (
-                error.response?.status === 401
-            ) {
-
-                navigate(
-                    "/login",
-                    {
-                        replace: true,
-                    }
-                );
-
-                return;
-            }
-
-
-            const backendMessage =
-                error.response?.data?.message ||
-                error.response?.data?.error;
-
-
-            setCreateError(
-                backendMessage ||
-                "Unable to create the account. Please try again."
+            setError(
+                err.response?.data?.message ||
+                err.response?.data?.error ||
+                "Unable to add money right now."
             );
-
         } finally {
-
-            setCreatingAccount(false);
-
+            setAddingMoney(false);
         }
     };
 
+    /*
+     * ---------------------------------------------------------
+     * CREATE / UPDATE DEMO BUDGETS
+     * ---------------------------------------------------------
+     *
+     * PUT is intentionally used because the existing budget
+     * endpoint creates the budget if it doesn't exist and
+     * updates it if it already exists.
+     *
+     * Therefore pressing Generate Demo Data multiple times
+     * will not create duplicate budgets.
+     */
+    const createDemoBudgets = async () => {
+        await Promise.all(
+            DEMO_BUDGETS.map((budget) =>
+                api.put("/budgets", {
+                    category: budget.category,
+                    monthlyLimit: budget.monthlyLimit,
+                })
+            )
+        );
+    };
 
-    // ==========================================================
-    // FORMAT CURRENCY
-    // ==========================================================
+    /*
+     * ---------------------------------------------------------
+     * CREATE / UPDATE DEMO SAVINGS GOALS
+     * ---------------------------------------------------------
+     *
+     * Same idea as budgets: PUT performs create/update.
+     */
+    const createDemoSavingsGoals = async () => {
+        await Promise.all(
+            DEMO_SAVINGS_GOALS.map((goal) =>
+                api.put("/savings-goals", {
+                    name: goal.name,
+                    targetAmount: goal.targetAmount,
+                    currentAmount: goal.currentAmount,
+                    targetDate: getFutureDate(
+                        goal.monthsFromNow
+                    ),
+                })
+            )
+        );
+    };
 
-    const formatCurrency = (value) => {
-
-        return new Intl.NumberFormat(
-            "en-IN",
-            {
-                style: "currency",
-                currency: "INR",
-                maximumFractionDigits: 2,
-            }
-        ).format(
-            Number(value || 0)
+    /*
+     * ---------------------------------------------------------
+     * GENERATE COMPLETE DEMO DATA
+     * ---------------------------------------------------------
+     */
+    const generateDemoData = async () => {
+        const confirmed = window.confirm(
+            "Generate the complete BankCore demo? This will prepare sample transactions, spending, budgets, and savings goals for your account."
         );
 
+        if (!confirmed) return;
+
+        try {
+            setGeneratingDemo(true);
+            setError("");
+            setMessage("");
+
+            /*
+             * 1. Generate banking transactions.
+             *
+             * If demo transactions already exist, the backend
+             * safely returns without creating duplicates.
+             */
+            const bankingResponse = await api.post(
+                "/demo-banking/demo-data"
+            );
+
+            /*
+             * 2. Create/update demo budgets.
+             */
+            await createDemoBudgets();
+
+            /*
+             * 3. Create/update demo savings goals.
+             */
+            await createDemoSavingsGoals();
+
+            const bankingMessage =
+                bankingResponse.data?.created
+                    ? "Demo banking data generated successfully."
+                    : "Demo banking data already exists.";
+
+            setMessage(
+                `${bankingMessage} Budgets and savings goals are ready.`
+            );
+
+            await loadAccounts();
+
+        } catch (err) {
+            console.error(
+                "Failed to generate complete demo data:",
+                err
+            );
+
+            setError(
+                err.response?.data?.message ||
+                err.response?.data?.error ||
+                "Unable to generate the complete demo data."
+            );
+        } finally {
+            setGeneratingDemo(false);
+        }
     };
 
+    const formatCurrency = (
+        amount,
+        currency = "INR"
+    ) => {
+        return new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(amount || 0);
+    };
 
-    // ==========================================================
-    // FORMAT DATE
-    // ==========================================================
+    const formatDate = (date) => {
+        if (!date) return "—";
 
-    const formatDate = (value) => {
-
-        if (!value) {
-            return "—";
-        }
-
-
-        const date = new Date(value);
-
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-
-            return "—";
-
-        }
-
-
-        return date.toLocaleDateString(
+        return new Date(date).toLocaleDateString(
             "en-IN",
             {
                 day: "2-digit",
-                month: "long",
+                month: "short",
                 year: "numeric",
             }
         );
-
     };
 
+    const getAccountTypeLabel = (type) => {
+        if (!type) return "Account";
 
-    // ==========================================================
-    // ACCOUNT TYPE
-    // ==========================================================
+        return type
+            .toString()
+            .toLowerCase()
+            .replace(
+                /^\w/,
+                (char) => char.toUpperCase()
+            );
+    };
 
-    const formatAccountType = (type) => {
+    const getAccountInitial = (type) => {
+        if (!type) return "A";
 
-        if (!type) {
-            return "Bank Account";
+        return type
+            .toString()
+            .charAt(0)
+            .toUpperCase();
+    };
+
+    const maskAccountNumber = (
+        accountNumber
+    ) => {
+        if (!accountNumber) return "—";
+
+        const value = String(accountNumber);
+
+        if (value.length <= 8) {
+            return value;
         }
 
+        const firstFour = value.slice(0, 4);
+        const lastFour = value.slice(-4);
 
-        return String(type)
-            .toLowerCase()
-            .replaceAll("_", " ")
-            .replace(
-                /\b\w/g,
-                (letter) =>
-                    letter.toUpperCase()
-            );
-
+        return `${firstFour} •••• •••• ${lastFour}`;
     };
 
-
-    // ==========================================================
-    // LOADING
-    // ==========================================================
+    const getAccountTypeClass = (type) => {
+        return (
+            type?.toString().toLowerCase() ||
+            "account"
+        );
+    };
 
     if (loading) {
-
         return (
-            <div className="dashboard-page">
+            <div className="accounts-page">
 
-                <section className="page-header">
+                <div className="accounts-loading-state">
 
-                    <div>
+                    <div className="accounts-loading-spinner" />
 
-                        <p className="eyebrow">
-                            BANKING
-                        </p>
-
-                        <h1>
-                            Your Accounts
-                        </h1>
-
-                        <p className="page-description">
-                            Loading your account information...
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-                <div className="dashboard-panel">
-
-                    <div className="empty-state">
-
-                        <div className="empty-icon">
-                            <CreditCard size={22} />
-                        </div>
-
-                        <h3>
-                            Loading accounts
-                        </h3>
-
-                        <p>
-                            Connecting securely to BankCore.
-                        </p>
-
-                    </div>
+                    <p>
+                        Loading your accounts...
+                    </p>
 
                 </div>
 
             </div>
         );
-
     }
-
-
-    // ==========================================================
-    // ERROR
-    // ==========================================================
-
-    if (error) {
-
-        return (
-            <div className="dashboard-page">
-
-                <section className="page-header">
-
-                    <div>
-
-                        <p className="eyebrow">
-                            BANKING
-                        </p>
-
-                        <h1>
-                            Your Accounts
-                        </h1>
-
-                        <p className="page-description">
-                            Manage your BankCore accounts.
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-                <div className="dashboard-panel">
-
-                    <div className="empty-state">
-
-                        <div className="empty-icon">
-                            <ShieldCheck size={22} />
-                        </div>
-
-                        <h3>
-                            Unable to load accounts
-                        </h3>
-
-                        <p>
-                            {error}
-                        </p>
-
-
-                        <button
-                            type="button"
-                            className="open-account-button"
-                            onClick={loadAccounts}
-                        >
-                            Try again
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-        );
-
-    }
-
-
-    // ==========================================================
-    // PAGE
-    // ==========================================================
 
     return (
-        <div className="dashboard-page">
+        <div className="accounts-page">
 
-            {/* ==================================================
-                HEADER
-            ================================================== */}
+            {/* =================================================
+                PAGE HEADER
+            ================================================= */}
 
-            <section className="page-header">
+            <div className="accounts-header">
 
-                <div>
+                <div className="accounts-heading">
 
-                    <p className="eyebrow">
-                        BANKING
-                    </p>
+                    <div className="accounts-eyebrow">
+                        PERSONAL BANKING
+                    </div>
 
                     <h1>
-                        Your Accounts
+                        My Accounts
                     </h1>
 
-                    <p className="page-description">
-                        View and manage your BankCore accounts.
+                    <p>
+                        View balances, manage accounts and
+                        add demo funds securely.
                     </p>
 
                 </div>
 
+                <div className="accounts-header-actions">
 
-                {/* ==================================================
-                    OPEN NEW ACCOUNT
-                ================================================== */}
-
-                <button
-                    type="button"
-                    className="open-account-button"
-                    onClick={() => {
-                        setAccountType("SAVINGS");
-                        setCreateError("");
-                        setCreateSuccess("");
-                        setShowCreateModal(true);
-                    }}
-                    aria-label="Open a new bank account"
-                >
-
-                    <Plus size={17} />
-
-                    <span>
-                        Open New Account
-                    </span>
-
-                </button>
-
-            </section>
-
-
-            {/* ==================================================
-                TOTAL BALANCE
-            ================================================== */}
-
-            <section className="dashboard-grid">
-
-                <div className="balance-card">
-
-                    <div className="card-top">
-
-                        <div>
-
-                            <p className="card-label">
-                                TOTAL BALANCE
-                            </p>
-
-                            <div className="balance-value">
-                                {formatCurrency(
-                                    totalBalance
-                                )}
-                            </div>
-
-                            <p className="balance-note">
-                                Across all your accounts
-                            </p>
-
-                        </div>
-
-
-                        <div className="card-icon balance-icon">
-
-                            <WalletCards size={21} />
-
-                        </div>
-
-                    </div>
-
-
-                    <div className="balance-footer">
-
-                        <div className="balance-status">
-
-                            <span className="status-dot" />
-
-                            {accounts.length}{" "}
-
-                            {accounts.length === 1
-                                ? "account"
-                                : "accounts"}
-
-                        </div>
-
-                        <span>
-                            INR
+                    <button
+                        type="button"
+                        className="demo-data-button"
+                        onClick={generateDemoData}
+                        disabled={generatingDemo}
+                    >
+                        <span className="button-icon">
+                            {generatingDemo
+                                ? "…"
+                                : "✦"}
                         </span>
 
-                    </div>
+                        {generatingDemo
+                            ? "Preparing Demo..."
+                            : "Generate Demo Data"}
+                    </button>
+
+                    {accounts.length > 0 && (
+                        <button
+                            type="button"
+                            className="add-money-header-button"
+                            onClick={() =>
+                                openAddMoney(
+                                    accounts[0]
+                                )
+                            }
+                        >
+                            <span className="button-icon">
+                                +
+                            </span>
+
+                            Add Money
+                        </button>
+                    )}
 
                 </div>
 
-            </section>
+            </div>
 
+            {/* =================================================
+                SUCCESS MESSAGE
+            ================================================= */}
 
-            {/* ==================================================
-                ACCOUNT CARDS
-            ================================================== */}
+            {message && (
+                <div className="accounts-success">
 
-            <section className="quick-actions">
+                    <span className="message-icon">
+                        ✓
+                    </span>
 
-                <div className="section-heading">
+                    <span>
+                        {message}
+                    </span>
 
-                    <div>
-
-                        <h2>
-                            Your Accounts
-                        </h2>
-
-                        <p>
-                            Active BankCore accounts
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                {accounts.length === 0 ? (
-
-                    <div className="dashboard-panel">
-
-                        <div className="empty-state">
-
-                            <div className="empty-icon">
-                                <CreditCard size={22} />
-                            </div>
-
-                            <h3>
-                                No accounts found
-                            </h3>
-
-                            <p>
-                                There are currently no accounts
-                                associated with your BankCore profile.
-                            </p>
-
-
-                            <button
-                                type="button"
-                                className="open-account-button"
-                                onClick={() => {
-                                    setAccountType("SAVINGS");
-                                    setCreateError("");
-                                    setCreateSuccess("");
-                                    setShowCreateModal(true);
-                                }}
-                            >
-
-                                <Plus size={17} />
-
-                                Open New Account
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                ) : (
-
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit, minmax(340px, 1fr))",
-                            gap: "18px",
-                        }}
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setMessage("")
+                        }
                     >
+                        ×
+                    </button>
 
-                        {accounts.map(
-                            (account) => (
+                </div>
+            )}
 
-                                <div
-                                    key={account.id}
-                                    className="dashboard-panel"
-                                    style={{
-                                        position: "relative",
-                                        overflow: "hidden",
-                                    }}
-                                >
+            {/* =================================================
+                ERROR MESSAGE
+            ================================================= */}
 
-                                    {/* CARD HEADER */}
+            {error && (
+                <div className="accounts-error">
+
+                    <span className="message-icon">
+                        !
+                    </span>
+
+                    <span>
+                        {error}
+                    </span>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setError("")
+                        }
+                    >
+                        ×
+                    </button>
+
+                </div>
+            )}
+
+            {/* =================================================
+                ACCOUNTS
+            ================================================= */}
+
+            {accounts.length === 0 ? (
+
+                <div className="empty-accounts">
+
+                    <div className="empty-account-icon">
+                        $
+                    </div>
+
+                    <h2>
+                        No accounts yet
+                    </h2>
+
+                    <p>
+                        Your banking accounts will appear here.
+                    </p>
+
+                </div>
+
+            ) : (
+
+                <div className="accounts-grid">
+
+                    {accounts.map((account) => (
+
+                        <article
+                            className={`account-card ${getAccountTypeClass(
+                                account.type
+                            )}`}
+                            key={account.id}
+                        >
+
+                            <div className="account-card-glow" />
+
+                            {/* CARD TOP */}
+
+                            <div className="account-card-top">
+
+                                <div className="account-identity">
 
                                     <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "flex-start",
-                                            justifyContent: "space-between",
-                                            marginBottom: "28px",
-                                        }}
+                                        className={`account-icon ${getAccountTypeClass(
+                                            account.type
+                                        )}`}
                                     >
-
-                                        <div
-                                            className="card-icon balance-icon"
-                                        >
-
-                                            <CreditCard
-                                                size={21}
-                                            />
-
-                                        </div>
-
-
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                gap: "6px",
-                                                fontSize: "12px",
-                                                fontWeight: 600,
-                                            }}
-                                        >
-
-                                            <CheckCircle2
-                                                size={15}
-                                                style={{
-                                                    color: "#22c55e",
-                                                }}
-                                            />
-
-                                            {account.status ||
-                                                "ACTIVE"}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* ACCOUNT TYPE */}
-
-                                    <p
-                                        className="card-label"
-                                        style={{
-                                            marginBottom: "8px",
-                                        }}
-                                    >
-
-                                        {formatAccountType(
+                                        {getAccountInitial(
                                             account.type
                                         )}
+                                    </div>
 
-                                    </p>
+                                    <div>
 
+                                        <span className="account-type">
+                                            {getAccountTypeLabel(
+                                                account.type
+                                            )}
+                                        </span>
 
-                                    {/* BALANCE */}
+                                        <div className="account-number">
+                                            {maskAccountNumber(
+                                                account.accountNumber
+                                            )}
+                                        </div>
 
-                                    <div
-                                        style={{
-                                            fontSize: "30px",
-                                            fontWeight: 700,
-                                            letterSpacing: "-0.03em",
-                                            marginBottom: "20px",
-                                        }}
-                                    >
+                                    </div>
 
-                                        {formatCurrency(
-                                            account.balance
+                                </div>
+
+                                <span
+                                    className={`account-status ${
+                                        account.status?.toLowerCase() ||
+                                        ""
+                                    }`}
+                                >
+                                    <span className="status-dot" />
+
+                                    {account.status}
+                                </span>
+
+                            </div>
+
+                            {/* BALANCE */}
+
+                            <div className="account-balance-section">
+
+                                <span className="balance-label">
+                                    Available balance
+                                </span>
+
+                                <strong className="account-balance">
+                                    {formatCurrency(
+                                        account.balance,
+                                        account.currency
+                                    )}
+                                </strong>
+
+                            </div>
+
+                            {/* META */}
+
+                            <div className="account-meta">
+
+                                <div className="account-meta-item">
+
+                                    <span>
+                                        Currency
+                                    </span>
+
+                                    <strong>
+                                        {account.currency ||
+                                            "INR"}
+                                    </strong>
+
+                                </div>
+
+                                <div className="account-meta-item">
+
+                                    <span>
+                                        Opened
+                                    </span>
+
+                                    <strong>
+                                        {formatDate(
+                                            account.createdAt
                                         )}
-
-                                    </div>
-
-
-                                    {/* ACCOUNT NUMBER */}
-
-                                    <div
-                                        style={{
-                                            padding: "14px",
-                                            borderRadius: "10px",
-                                            background:
-                                                "rgba(255,255,255,0.035)",
-                                            marginBottom: "18px",
-                                        }}
-                                    >
-
-                                        <div
-                                            style={{
-                                                fontSize: "10px",
-                                                letterSpacing: "0.12em",
-                                                textTransform: "uppercase",
-                                                opacity: 0.5,
-                                                marginBottom: "6px",
-                                            }}
-                                        >
-                                            Account Number
-                                        </div>
-
-
-                                        <div
-                                            style={{
-                                                fontSize: "14px",
-                                                fontWeight: 600,
-                                                letterSpacing: "0.04em",
-                                            }}
-                                        >
-
-                                            {account.accountNumber ||
-                                                "—"}
-
-                                        </div>
-
-                                    </div>
-
-
-                                    {/* ACCOUNT DETAILS */}
-
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            gridTemplateColumns:
-                                                "1fr 1fr",
-                                            gap: "12px",
-                                        }}
-                                    >
-
-                                        <AccountDetail
-                                            icon={CalendarDays}
-                                            label="Opened"
-                                            value={
-                                                formatDate(
-                                                    account.createdAt
-                                                )
-                                            }
-                                        />
-
-
-                                        <AccountDetail
-                                            icon={ShieldCheck}
-                                            label="Status"
-                                            value={
-                                                account.status ||
-                                                "ACTIVE"
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    {/* CARD FOOTER */}
-
-                                    <div
-                                        style={{
-                                            marginTop: "22px",
-                                            paddingTop: "16px",
-                                            borderTop:
-                                                "1px solid rgba(255,255,255,0.06)",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent:
-                                                "space-between",
-                                        }}
-                                    >
-
-                                        <span
-                                            style={{
-                                                fontSize: "12px",
-                                                opacity: 0.5,
-                                            }}
-                                        >
-                                            Currency
-                                        </span>
-
-                                        <span
-                                            style={{
-                                                fontSize: "12px",
-                                                fontWeight: 600,
-                                            }}
-                                        >
-
-                                            {account.currency ||
-                                                "INR"}
-
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            )
-                        )}
-
-                    </div>
-
-                )}
-
-            </section>
-
-
-            {/* ==================================================
-                ACCOUNT ACTIONS
-            ================================================== */}
-
-            <section className="quick-actions">
-
-                <div className="section-heading">
-
-                    <div>
-
-                        <h2>
-                            Account Actions
-                        </h2>
-
-                        <p>
-                            Frequently used banking actions
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div className="quick-action-grid">
-
-                    <button
-                        type="button"
-                        className="quick-action"
-                        onClick={() =>
-                            navigate("/transfer")
-                        }
-                    >
-
-                        <div className="quick-action-icon">
-                            <ArrowUpRight size={20} />
-                        </div>
-
-                        <div className="quick-action-content">
-
-                            <strong>
-                                Transfer Money
-                            </strong>
-
-                            <span>
-                                Send money securely
-                            </span>
-
-                        </div>
-
-                        <ArrowUpRight
-                            size={17}
-                            className="quick-action-arrow"
-                        />
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        className="quick-action"
-                        onClick={() =>
-                            navigate("/transactions")
-                        }
-                    >
-
-                        <div className="quick-action-icon">
-                            <CreditCard size={20} />
-                        </div>
-
-                        <div className="quick-action-content">
-
-                            <strong>
-                                View Transactions
-                            </strong>
-
-                            <span>
-                                Review account activity
-                            </span>
-
-                        </div>
-
-                        <ArrowUpRight
-                            size={17}
-                            className="quick-action-arrow"
-                        />
-
-                    </button>
-
-                </div>
-
-            </section>
-
-
-            {/* ==================================================
-                CREATE ACCOUNT MODAL
-            ================================================== */}
-
-            {showCreateModal && (
-
-                <div
-                    className="bankcore-modal-overlay"
-                    onMouseDown={(event) => {
-
-                        if (
-                            event.target ===
-                            event.currentTarget &&
-                            !creatingAccount
-                        ) {
-
-                            closeCreateModal();
-
-                        }
-
-                    }}
-                >
-
-                    <div
-                        className="bankcore-modal"
-                        role="dialog"
-                        aria-modal="true"
-                        aria-labelledby="create-account-title"
-                    >
-
-                        {/* MODAL HEADER */}
-
-                        <div
-                            className="bankcore-modal-header"
-                        >
-
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "12px",
-                                }}
-                            >
-
-                                <div
-                                    className="bankcore-modal-icon"
-                                >
-
-                                    <Building2
-                                        size={20}
-                                    />
-
-                                </div>
-
-                                <div>
-
-                                    <h2
-                                        id="create-account-title"
-                                    >
-                                        Open New Account
-                                    </h2>
-
-                                    <p>
-                                        Add another account to your
-                                        BankCore profile.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <button
-                                type="button"
-                                className="bankcore-modal-close"
-                                onClick={closeCreateModal}
-                                disabled={creatingAccount}
-                                aria-label="Close"
-                            >
-
-                                <X size={18} />
-
-                            </button>
-
-                        </div>
-
-
-                        {/* MODAL BODY */}
-
-                        <div
-                            className="bankcore-modal-body"
-                        >
-
-                            <div
-                                className="bankcore-form-group"
-                            >
-
-                                <label>
-                                    Account Type
-                                </label>
-
-
-                                <div
-                                    className="bankcore-account-type-options"
-                                >
-
-                                    {/* SAVINGS */}
-
-                                    <button
-                                        type="button"
-                                        className={`bankcore-account-type-option ${
-                                            accountType === "SAVINGS"
-                                                ? "selected"
-                                                : ""
-                                        }`}
-                                        onClick={() =>
-                                            setAccountType(
-                                                "SAVINGS"
-                                            )
-                                        }
-                                        disabled={
-                                            creatingAccount
-                                        }
-                                    >
-
-                                        <div
-                                            className="bankcore-account-type-icon"
-                                        >
-
-                                            <WalletCards
-                                                size={19}
-                                            />
-
-                                        </div>
-
-
-                                        <div
-                                            className="bankcore-account-type-content"
-                                        >
-
-                                            <strong>
-                                                Savings Account
-                                            </strong>
-
-                                            <span>
-                                                For everyday saving
-                                                and spending
-                                            </span>
-
-                                        </div>
-
-
-                                        <span
-                                            className="bankcore-radio"
-                                        />
-
-                                    </button>
-
-
-                                    {/* CURRENT */}
-
-                                    <button
-                                        type="button"
-                                        className={`bankcore-account-type-option ${
-                                            accountType === "CURRENT"
-                                                ? "selected"
-                                                : ""
-                                        }`}
-                                        onClick={() =>
-                                            setAccountType(
-                                                "CURRENT"
-                                            )
-                                        }
-                                        disabled={
-                                            creatingAccount
-                                        }
-                                    >
-
-                                        <div
-                                            className="bankcore-account-type-icon"
-                                        >
-
-                                            <CreditCard
-                                                size={19}
-                                            />
-
-                                        </div>
-
-
-                                        <div
-                                            className="bankcore-account-type-content"
-                                        >
-
-                                            <strong>
-                                                Current Account
-                                            </strong>
-
-                                            <span>
-                                                For business and
-                                                frequent transactions
-                                            </span>
-
-                                        </div>
-
-
-                                        <span
-                                            className="bankcore-radio"
-                                        />
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-
-                            {/* ZERO BALANCE */}
-
-                            <div
-                                className="bankcore-zero-balance"
-                            >
-
-                                <div
-                                    className="bankcore-zero-balance-icon"
-                                >
-
-                                    <WalletCards
-                                        size={17}
-                                    />
-
-                                </div>
-
-
-                                <div>
-
-                                    <strong>
-                                        Starting balance
                                     </strong>
 
-                                    <span>
-                                        ₹0.00
-                                    </span>
-
-                                    <p>
-                                        New accounts start with a
-                                        zero balance. You can fund
-                                        the account through a transfer.
-                                    </p>
-
                                 </div>
 
                             </div>
 
-
-                            {/* ERROR */}
-
-                            {createError && (
-
-                                <div
-                                    className="bankcore-create-error"
-                                >
-
-                                    <strong>
-                                        Account creation failed
-                                    </strong>
-
-                                    <span>
-                                        {createError}
-                                    </span>
-
-                                </div>
-
-                            )}
-
-
-                            {/* SUCCESS */}
-
-                            {createSuccess && (
-
-                                <div
-                                    className="bankcore-create-success"
-                                >
-
-                                    <CheckCircle2
-                                        size={18}
-                                    />
-
-                                    <span>
-                                        {createSuccess}
-                                    </span>
-
-                                </div>
-
-                            )}
-
-                        </div>
-
-
-                        {/* MODAL FOOTER */}
-
-                        <div
-                            className="bankcore-modal-footer"
-                        >
+                            {/* ACTION */}
 
                             <button
                                 type="button"
-                                className="bankcore-modal-cancel"
-                                onClick={closeCreateModal}
-                                disabled={creatingAccount}
-                            >
-                                Cancel
-                            </button>
-
-
-                            <button
-                                type="button"
-                                className="bankcore-modal-create"
-                                onClick={createAccount}
+                                className="account-add-money-button"
+                                onClick={() =>
+                                    openAddMoney(
+                                        account
+                                    )
+                                }
                                 disabled={
-                                    creatingAccount ||
-                                    !!createSuccess
+                                    account.status !==
+                                    "ACTIVE"
                                 }
                             >
+                                <span>
+                                    + Add Money
+                                </span>
 
-                                {creatingAccount ? (
-
-                                    <>
-                                        <Loader2
-                                            size={17}
-                                            className="bankcore-spin"
-                                        />
-
-                                        Creating...
-                                    </>
-
-                                ) : (
-
-                                    <>
-                                        <Plus size={17} />
-
-                                        Create Account
-                                    </>
-
-                                )}
+                                <span className="action-arrow">
+                                    →
+                                </span>
 
                             </button>
 
-                        </div>
+                        </article>
 
-                    </div>
+                    ))}
 
                 </div>
 
             )}
 
+            {/* =================================================
+                ADD MONEY MODAL
+            ================================================= */}
+
+            {showAddMoney &&
+                selectedAccount && (
+
+                    <div
+                        className="modal-overlay"
+                        onMouseDown={(event) => {
+
+                            if (
+                                event.target ===
+                                event.currentTarget
+                            ) {
+                                closeAddMoney();
+                            }
+
+                        }}
+                    >
+
+                        <div
+                            className="add-money-modal"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="add-money-title"
+                        >
+
+                            {/* MODAL HEADER */}
+
+                            <div className="modal-header">
+
+                                <div className="modal-heading">
+
+                                    <div className="modal-eyebrow">
+                                        DEMO FUNDING
+                                    </div>
+
+                                    <h2 id="add-money-title">
+                                        Add Money
+                                    </h2>
+
+                                    <p>
+                                        Simulate a deposit into
+                                        your BankCore account.
+                                    </p>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="modal-close"
+                                    onClick={
+                                        closeAddMoney
+                                    }
+                                    disabled={
+                                        addingMoney
+                                    }
+                                    aria-label="Close"
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                            {/* SELECTED ACCOUNT */}
+
+                            <div className="selected-account-card">
+
+                                <div className="selected-account-top">
+
+                                    <div className="selected-account-icon">
+                                        {getAccountInitial(
+                                            selectedAccount.type
+                                        )}
+                                    </div>
+
+                                    <div>
+
+                                        <span>
+                                            {getAccountTypeLabel(
+                                                selectedAccount.type
+                                            )}
+                                        </span>
+
+                                        <strong>
+                                            {maskAccountNumber(
+                                                selectedAccount.accountNumber
+                                            )}
+                                        </strong>
+
+                                    </div>
+
+                                    <span className="selected-active">
+                                        ACTIVE
+                                    </span>
+
+                                </div>
+
+                                <div className="selected-account-balance">
+
+                                    <span>
+                                        Current balance
+                                    </span>
+
+                                    <strong>
+                                        {formatCurrency(
+                                            selectedAccount.balance,
+                                            selectedAccount.currency
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            {/* FORM */}
+
+                            <form
+                                onSubmit={
+                                    handleAddMoney
+                                }
+                                className="add-money-form"
+                            >
+
+                                <label>
+
+                                    <span className="form-label">
+                                        Amount
+                                    </span>
+
+                                    <div className="amount-input-wrapper">
+
+                                        <span className="currency-symbol">
+                                            ₹
+                                        </span>
+
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max="1000000"
+                                            step="0.01"
+                                            value={amount}
+                                            onChange={(
+                                                event
+                                            ) =>
+                                                setAmount(
+                                                    event
+                                                        .target
+                                                        .value
+                                                )
+                                            }
+                                            placeholder="0.00"
+                                            disabled={
+                                                addingMoney
+                                            }
+                                            required
+                                            autoFocus
+                                        />
+
+                                    </div>
+
+                                    <span className="field-hint">
+                                        Maximum demo deposit:
+                                        ₹10,00,000
+                                    </span>
+
+                                </label>
+
+                                <label>
+
+                                    <span className="form-label">
+                                        Description
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        maxLength="255"
+                                        value={description}
+                                        onChange={(
+                                            event
+                                        ) =>
+                                            setDescription(
+                                                event
+                                                    .target
+                                                    .value
+                                            )
+                                        }
+                                        placeholder="e.g. Demo salary credit"
+                                        disabled={
+                                            addingMoney
+                                        }
+                                    />
+
+                                    <span className="field-hint">
+                                        Optional
+                                    </span>
+
+                                </label>
+
+                                {error && (
+                                    <div className="modal-error">
+
+                                        <span>
+                                            !
+                                        </span>
+
+                                        {error}
+
+                                    </div>
+                                )}
+
+                                {message && (
+                                    <div className="modal-success">
+
+                                        <span>
+                                            ✓
+                                        </span>
+
+                                        {message}
+
+                                    </div>
+                                )}
+
+                                {/* ACTIONS */}
+
+                                <div className="modal-actions">
+
+                                    <button
+                                        type="button"
+                                        className="cancel-button"
+                                        onClick={
+                                            closeAddMoney
+                                        }
+                                        disabled={
+                                            addingMoney
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        className="confirm-add-money-button"
+                                        disabled={
+                                            addingMoney ||
+                                            !amount
+                                        }
+                                    >
+                                        {addingMoney ? (
+                                            <>
+                                                <span className="button-spinner" />
+
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Add Money
+
+                                                <span>
+                                                    →
+                                                </span>
+                                            </>
+                                        )}
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                            <div className="modal-security-note">
+
+                                <span>
+                                    ⌁
+                                </span>
+
+                                Demo transactions are recorded
+                                securely in your BankCore ledger.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                )}
+
         </div>
     );
 }
-
-
-// ============================================================
-// ACCOUNT DETAIL
-// ============================================================
-
-function AccountDetail({
-                           icon: Icon,
-                           label,
-                           value,
-                       }) {
-
-    return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "9px",
-            }}
-        >
-
-            <Icon
-                size={15}
-                style={{
-                    opacity: 0.55,
-                }}
-            />
-
-
-            <div>
-
-                <div
-                    style={{
-                        fontSize: "10px",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        opacity: 0.45,
-                        marginBottom: "3px",
-                    }}
-                >
-                    {label}
-                </div>
-
-
-                <div
-                    style={{
-                        fontSize: "12px",
-                        fontWeight: 600,
-                    }}
-                >
-                    {value}
-                </div>
-
-            </div>
-
-        </div>
-    );
-}
-
 
 export default AccountsPage;
