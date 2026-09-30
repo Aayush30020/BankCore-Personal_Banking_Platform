@@ -43,7 +43,7 @@ public class DemoDataSeeder implements CommandLineRunner {
      * Keep this FALSE during normal application operation.
      * We will temporarily change it to TRUE for one run.
      */
-    private static final boolean ENABLE_DEMO_SEED = true;
+    private static final boolean ENABLE_DEMO_SEED = false;
 
     private static final String DEMO_PASSWORD =
             "DemoBankCore@2026";
