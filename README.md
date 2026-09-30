@@ -1,60 +1,52 @@
-```markdown
-# 🏦 BankCore — Personal Banking Platform
+# BankCore
 
-BankCore is a full-stack personal banking platform built to simulate modern digital banking workflows with secure authentication, account management, money transfers, transaction tracking, spending analytics, budgeting, savings goals, financial health insights, and an AI-powered banking assistant.
+> A full-stack personal banking platform built with Spring Boot, React, PostgreSQL, Spring Security, JWT, Spring AI, Google Gemini, and PGVector.
 
-The application combines a React frontend with a Spring Boot backend, PostgreSQL database, JWT authentication, Spring Security, Spring AI, Google Gemini, and PGVector.
+## Live Demo
 
----
+- Frontend: [https://bank-core-personal-banking-platform.vercel.app/](https://bank-core-personal-banking-platform.vercel.app/)
+- Backend: [https://bankcore-backend-izco.onrender.com/](https://bankcore-backend-izco.onrender.com/)
+- Health Check: [https://bankcore-backend-izco.onrender.com/health](https://bankcore-backend-izco.onrender.com/health)
+- GitHub: [https://github.com/Aayush30020/BankCore-Personal_Banking_Platform](https://github.com/Aayush30020/BankCore-Personal_Banking_Platform)
 
-## 🌐 Live Demo
+## Overview
 
-**🚀 Frontend**
+BankCore is a full-stack personal banking platform designed to simulate modern digital banking workflows.
 
-https://bank-core-personal-banking-platform.vercel.app/
+The application allows users to securely manage bank accounts, transfer money, view transactions, analyze spending, create budgets, track savings goals, monitor financial health, and interact with an AI-powered banking assistant.
 
-**⚙️ Backend API**
+The project combines:
 
-https://bankcore-backend-izco.onrender.com/
+- Secure authentication and authorization
+- Bank account management
+- Money transfers
+- Transaction management
+- Idempotent financial operations
+- Debit and credit ledger entries
+- Spending analytics
+- Budget management
+- Savings goals
+- Financial health insights
+- Demo banking data
+- Spring AI and Google Gemini
+- AI tool calling
+- Retrieval-Augmented Generation
+- PGVector
+- Production deployment and monitoring
 
-**💚 Backend Health Check**
+## Problem Statement
 
-https://bankcore-backend-izco.onrender.com/health
+Modern personal banking applications need more than simple CRUD operations.
 
-**📂 GitHub Repository**
+A banking platform must handle authentication, customer data isolation, account balances, financial transactions, concurrency, transaction consistency, duplicate requests, financial analytics, and secure access to customer-specific information.
 
-https://github.com/Aayush30020/BankCore-Personal_Banking_Platform
+BankCore brings these concepts together into a single full-stack application while also demonstrating how generative AI can be integrated into a banking system through controlled backend tools.
 
----
+## Key Features
 
-## 📌 Overview
+### Authentication and Security
 
-BankCore is designed as a production-style personal banking platform that demonstrates how modern banking systems can be structured using a secure backend and an interactive frontend.
-
-Users can:
-
-- 🔐 Register and securely log in
-- 🏦 Create and manage bank accounts
-- 💰 View account balances
-- 💸 Transfer money between accounts
-- 📜 View transaction history
-- 📊 Analyze monthly spending
-- 🎯 Create and manage budgets
-- 🪙 Create and track savings goals
-- ❤️ Monitor financial health
-- 🧪 Generate demo banking data
-- ➕ Add simulated money to accounts
-- 🤖 Interact with an AI-powered banking assistant
-
-The project also demonstrates important backend engineering concepts such as transaction management, idempotency, database locking, ledger entries, JWT authentication, customer data isolation, and controlled AI tool calling.
-
----
-
-# ✨ Features
-
-## 🔐 Authentication & Security
-
-- Secure user registration and login
+- User registration and login
 - JWT-based authentication
 - Spring Security
 - BCrypt password hashing
@@ -63,13 +55,11 @@ The project also demonstrates important backend engineering concepts such as tra
 - Authenticated AI requests
 - Unauthorized request protection
 
----
-
-## 🏦 Account Management
+### Account Management
 
 Users can create and manage multiple bank accounts.
 
-Features include:
+The account system supports:
 
 - Savings accounts
 - Current accounts
@@ -80,11 +70,9 @@ Features include:
 - Account creation timestamps
 - Customer-specific account access
 
----
+### Money Transfers
 
-## 💸 Money Transfers
-
-BankCore provides secure account-to-account transfers.
+BankCore supports account-to-account money transfers.
 
 The transfer workflow validates:
 
@@ -95,26 +83,22 @@ The transfer workflow validates:
 - Available balance
 - Transfer amount
 
-Each successful transfer creates the required transaction and ledger records while updating account balances atomically.
+A successful transfer updates the related account balances and creates the corresponding transaction and ledger records within a database transaction.
 
----
+### Idempotent Transfers
 
-## 🔁 Idempotent Transactions
+BankCore uses idempotency keys to prevent duplicate financial transactions.
 
-BankCore implements idempotency for money transfers.
-
-Each transfer request uses an idempotency key to prevent accidental duplicate transactions caused by:
+This protects against duplicate requests caused by:
 
 - Network retries
-- Duplicate requests
 - Client retries
 - Request timeouts
+- Duplicate API requests
 
-If the same idempotency key is submitted again, the existing transaction can be returned instead of creating a duplicate transaction.
+If the same idempotency key is received again, the existing transaction can be returned instead of creating another transaction.
 
----
-
-## 📒 Ledger System
+### Ledger System
 
 BankCore maintains a separate ledger for financial transactions.
 
@@ -125,25 +109,23 @@ A successful transfer creates:
 
 This provides an additional financial record for tracking account activity.
 
----
+### Spending Analytics
 
-## 📊 Spending Analytics
-
-BankCore analyzes completed outgoing transactions and categorizes spending.
+Completed outgoing transactions are categorized into spending categories.
 
 Supported categories include:
 
-- 🍔 Food
-- 🛍️ Shopping
-- 🧾 Bills
-- 🚗 Transport
-- 🎬 Entertainment
-- 🏥 Health
-- 📚 Education
-- 💸 Transfer
-- 📦 Other
+- Food
+- Shopping
+- Bills
+- Transport
+- Entertainment
+- Health
+- Education
+- Transfer
+- Other
 
-The spending section provides:
+The spending dashboard provides:
 
 - Total spending
 - Category-wise spending
@@ -151,15 +133,13 @@ The spending section provides:
 - Recent transactions
 - Spending distribution
 
----
-
-## 💰 Budget Management
+### Budget Management
 
 Users can create monthly budgets for different spending categories.
 
 BankCore tracks:
 
-- Monthly budget limit
+- Monthly budget limits
 - Current month spending
 - Remaining budget
 - Budget utilization
@@ -177,9 +157,7 @@ Education      ₹2,000
 Entertainment  ₹3,000
 ```
 
----
-
-## 🎯 Savings Goals
+### Savings Goals
 
 Users can create and track personal savings goals.
 
@@ -191,7 +169,7 @@ Each goal contains:
 - Target date
 - Progress percentage
 
-BankCore can also calculate:
+BankCore can calculate:
 
 - Remaining amount
 - Required monthly savings
@@ -210,9 +188,7 @@ Remaining Amount: ₹90,000
 Required Monthly Saving: ₹30,000
 ```
 
----
-
-## ❤️ Financial Health
+### Financial Health
 
 The Financial Health section provides a consolidated view of the user's finances.
 
@@ -224,15 +200,11 @@ It combines information from:
 - Savings goals
 - Financial alerts
 
-This provides a centralized overview of the customer's financial activity.
+## BankCore AI
 
----
+One of the major features of BankCore is its AI-powered banking assistant.
 
-# 🤖 BankCore AI
-
-One of the main features of BankCore is its AI-powered banking assistant.
-
-The assistant is built using:
+The AI system is built using:
 
 - Spring AI
 - Google Gemini
@@ -240,11 +212,9 @@ The assistant is built using:
 - PGVector
 - Retrieval-Augmented Generation
 
-The AI assistant can answer general BankCore questions as well as authenticated customer-specific financial questions.
+The assistant can answer both general BankCore questions and authenticated customer-specific financial questions.
 
----
-
-## 🧠 AI Tool Calling
+## AI Tool Calling
 
 The AI does not directly access the database.
 
@@ -262,19 +232,17 @@ getMySavingsGoalAnalysis
 getFinancialAlerts
 ```
 
-For example, a user can ask:
+For example:
 
 ```text
 How much do I need to save every month for my Bike goal?
 ```
 
-The AI retrieves the actual savings goal information from the backend and generates a response based on the retrieved data.
+The AI retrieves the customer's actual savings goal information from the backend and generates a response based on that information.
 
----
+## Multi-Tool AI Queries
 
-## 🔗 Multi-Tool AI Queries
-
-BankCore can combine multiple backend tools when a question requires information from different areas of the application.
+BankCore can combine information from multiple backend tools when a question requires information from different areas of the application.
 
 For example:
 
@@ -290,9 +258,7 @@ The AI can retrieve:
 
 and combine both results into a single response.
 
----
-
-## 📚 Retrieval-Augmented Generation
+## Retrieval-Augmented Generation
 
 BankCore uses PostgreSQL with PGVector for vector-based knowledge retrieval.
 
@@ -306,17 +272,15 @@ The RAG system is used for BankCore-specific information such as:
 
 Customer-specific financial information is retrieved through authenticated backend tools rather than relying on RAG.
 
----
-
-## 🛡️ AI Safety
+## AI Safety
 
 The AI assistant follows controlled access rules.
 
-### 👤 Customer Data Isolation
+### Customer Data Isolation
 
 Customer-specific financial information is retrieved only for the authenticated customer.
 
-### 🎯 Backend as Source of Truth
+### Backend as Source of Truth
 
 The backend remains the source of truth for:
 
@@ -327,70 +291,93 @@ The backend remains the source of truth for:
 - Savings goals
 - Financial alerts
 
-### 🔒 Controlled Tool Access
+### Controlled Tool Access
 
 The AI can only use explicitly exposed backend tools.
 
-### 🚫 No Unrestricted Money Movement
+### No Unrestricted Money Movement
 
 The AI does not have unrestricted access to transfer money.
 
 Financial operations remain controlled by dedicated banking APIs.
 
----
-
-# 🏗️ Architecture
+## How It Works
 
 ```text
-                         ┌──────────────────┐
-                         │      User        │
-                         └────────┬─────────┘
-                                  │
-                                  ▼
-                         ┌──────────────────┐
-                         │ React + Vite     │
-                         │    Frontend      │
-                         └────────┬─────────┘
-                                  │
-                               REST API
-                                  │
-                                  ▼
-                      ┌────────────────────────┐
-                      │     Spring Boot        │
-                      │      Backend           │
-                      └───────────┬────────────┘
-                                  │
-               ┌──────────────────┼──────────────────┐
-               │                  │                  │
-               ▼                  ▼                  ▼
-        ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-        │ PostgreSQL  │    │   Spring AI │    │  Security   │
-        │    Neon     │    │             │    │ JWT / BCrypt│
-        └─────────────┘    └──────┬──────┘    └─────────────┘
-                                  │
-                          ┌───────┴────────┐
-                          │                │
-                          ▼                ▼
-                   ┌────────────┐   ┌────────────┐
-                   │   Gemini   │   │  PGVector  │
-                   │     AI     │   │    RAG     │
-                   └────────────┘   └────────────┘
+User
+  |
+  v
+React Frontend
+  |
+  | REST API
+  v
+Spring Boot Backend
+  |
+  +-------------------+-------------------+
+  |                   |                   |
+  v                   v                   v
+Security          Banking Services     Spring AI
+JWT / BCrypt      Accounts            Gemini
+                  Transfers            Tool Calling
+                  Transactions         RAG
+                  Budgets
+                  Goals
+  |                                      |
+  v                                      v
+PostgreSQL                              PGVector
+Neon
 ```
 
----
+## System Architecture
 
-# 🛠️ Technology Stack
+```text
+                         +----------------------+
+                         |        User          |
+                         +----------+-----------+
+                                    |
+                                    v
+                         +----------------------+
+                         | React + Vite         |
+                         | Frontend             |
+                         +----------+-----------+
+                                    |
+                              HTTP / REST
+                                    |
+                                    v
+                         +----------------------+
+                         | Spring Boot Backend  |
+                         +----------+-----------+
+                                    |
+                +-------------------+-------------------+
+                |                   |                   |
+                v                   v                   v
+        +---------------+   +---------------+   +---------------+
+        | Spring        |   | Banking       |   | Spring AI     |
+        | Security      |   | Services      |   |               |
+        | JWT / BCrypt  |   |               |   | Gemini        |
+        +---------------+   +-------+-------+   | Tool Calling  |
+                                      |          | RAG           |
+                                      |          +-------+-------+
+                                      |                  |
+                                      v                  v
+                              +---------------+   +---------------+
+                              | PostgreSQL    |   | PGVector      |
+                              | Neon          |   | Vector Store  |
+                              +---------------+   +---------------+
+```
 
-## 🎨 Frontend
+## Technology Stack
+
+### Frontend
 
 | Technology | Purpose |
 |---|---|
 | React | Frontend framework |
 | Vite | Frontend build tool |
 | Axios | API communication |
-| CSS | UI styling |
+| CSS | User interface styling |
 
-## ⚙️ Backend
+### Backend
 
 | Technology | Purpose |
 |---|---|
@@ -403,7 +390,7 @@ Financial operations remain controlled by dedicated banking APIs.
 | BCrypt | Password hashing |
 | Maven | Dependency management |
 
-## 🗄️ Database
+### Database
 
 | Technology | Purpose |
 |---|---|
@@ -411,7 +398,7 @@ Financial operations remain controlled by dedicated banking APIs.
 | Neon | Production PostgreSQL hosting |
 | PGVector | Vector storage and similarity search |
 
-## 🤖 AI
+### AI
 
 | Technology | Purpose |
 |---|---|
@@ -420,7 +407,7 @@ Financial operations remain controlled by dedicated banking APIs.
 | PGVector | RAG vector storage |
 | Tool Calling | Customer-specific banking data retrieval |
 
-## ☁️ Deployment
+### Deployment
 
 | Platform | Purpose |
 |---|---|
@@ -429,9 +416,7 @@ Financial operations remain controlled by dedicated banking APIs.
 | Neon | PostgreSQL database |
 | GitHub | Source code and version control |
 
----
-
-# 📂 Project Structure
+## Project Structure
 
 ```text
 BankCore-Personal_Banking_Platform/
@@ -472,18 +457,16 @@ BankCore-Personal_Banking_Platform/
 └── README.md
 ```
 
----
+## REST API
 
-# 🚀 REST API
-
-## 🔐 Authentication
+### Authentication
 
 ```http
 POST /api/auth/register
 POST /api/auth/login
 ```
 
-## 🏦 Accounts
+### Accounts
 
 ```http
 GET  /api/accounts
@@ -492,25 +475,25 @@ POST /api/accounts
 GET  /api/accounts/lookup?accountNumber={accountNumber}
 ```
 
-## 💸 Transfers
+### Transfers
 
 ```http
 POST /api/transfers
 ```
 
-## 📜 Transactions
+### Transactions
 
 ```http
 GET /api/transactions
 ```
 
-## 📊 Spending
+### Spending
 
 ```http
 GET /api/spending
 ```
 
-## 💰 Budgets
+### Budgets
 
 ```http
 GET    /api/budgets
@@ -518,7 +501,7 @@ PUT    /api/budgets
 DELETE /api/budgets/{category}
 ```
 
-## 🎯 Savings Goals
+### Savings Goals
 
 ```http
 GET    /api/savings-goals
@@ -526,13 +509,13 @@ PUT    /api/savings-goals
 DELETE /api/savings-goals/{name}
 ```
 
-## 🤖 AI Assistant
+### AI Assistant
 
 ```http
 POST /api/ai/chat
 ```
 
-Example:
+Example request:
 
 ```json
 {
@@ -540,13 +523,13 @@ Example:
 }
 ```
 
-## 💚 Health
+### Health Check
 
 ```http
 GET /health
 ```
 
-Response:
+Example response:
 
 ```json
 {
@@ -554,13 +537,11 @@ Response:
 }
 ```
 
----
+## Local Development
 
-# 💻 Local Setup
+### Prerequisites
 
-## 📋 Prerequisites
-
-Install the following:
+Install:
 
 - Java 21+
 - Node.js
@@ -574,21 +555,14 @@ Recommended:
 - VS Code
 - Docker Desktop
 
----
-
-## 📥 Clone Repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/Aayush30020/BankCore-Personal_Banking_Platform.git
-```
-
-```bash
 cd BankCore-Personal_Banking_Platform
 ```
 
----
-
-# ⚙️ Backend Setup
+## Backend Setup
 
 Configure the required environment variables:
 
@@ -613,15 +587,13 @@ For Windows:
 mvnw.cmd spring-boot:run
 ```
 
-Backend:
+The backend will run at:
 
 ```text
 http://localhost:8080
 ```
 
----
-
-# 🎨 Frontend Setup
+## Frontend Setup
 
 Navigate to the frontend:
 
@@ -647,17 +619,15 @@ Run the frontend:
 npm run dev
 ```
 
-Frontend:
+The frontend will run at:
 
 ```text
 http://localhost:5173
 ```
 
----
+## Environment Variables
 
-# 🔑 Environment Variables
-
-## Backend
+### Backend
 
 ```text
 DATABASE_URL
@@ -667,7 +637,7 @@ JWT_SECRET
 GEMINI_API_KEY
 ```
 
-## Frontend
+### Frontend
 
 ```text
 VITE_API_URL
@@ -675,47 +645,45 @@ VITE_API_URL
 
 Never commit real passwords, API keys, JWT secrets, database credentials, or authentication tokens to GitHub.
 
----
+## Production Deployment
 
-# 🌍 Production Deployment
-
-BankCore is deployed using the following architecture:
+BankCore is deployed using:
 
 ```text
 Frontend
-   ↓
+    |
+    v
 Vercel
-   ↓
+    |
+    v
 Spring Boot REST API
-   ↓
+    |
+    v
 Render
-   ↓
-PostgreSQL
-   ↓
-Neon
+    |
+    v
+Neon PostgreSQL
 ```
 
-### 🚀 Frontend
+### Frontend
 
-https://bank-core-personal-banking-platform.vercel.app/
+[https://bank-core-personal-banking-platform.vercel.app/](https://bank-core-personal-banking-platform.vercel.app/)
 
-### ⚙️ Backend
+### Backend
 
-https://bankcore-backend-izco.onrender.com/
+[https://bankcore-backend-izco.onrender.com/](https://bankcore-backend-izco.onrender.com/)
 
-### 🗄️ Database
+### Database
 
-Neon PostgreSQL
+Neon PostgreSQL is used as the production database.
 
-### 💚 Health Monitoring
+### Health Monitoring
 
-https://bankcore-backend-izco.onrender.com/health
+[https://bankcore-backend-izco.onrender.com/health](https://bankcore-backend-izco.onrender.com/health)
 
-The backend health endpoint is publicly accessible and can be monitored by uptime monitoring services.
+The backend health endpoint is publicly accessible and can be used by uptime monitoring services.
 
----
-
-# 🧪 Demo Data
+## Demo Data
 
 BankCore includes a demo data generation workflow.
 
@@ -731,31 +699,36 @@ It can create sample:
 
 This makes it possible to demonstrate the complete banking platform without manually creating every transaction.
 
----
-
-# 🔄 Demo Workflow
-
-A typical demonstration can follow this flow:
+## Demo Workflow
 
 ```text
 Register
-   ↓
+   |
+   v
 Login
-   ↓
+   |
+   v
 Generate Demo Data
-   ↓
+   |
+   v
 View Accounts
-   ↓
+   |
+   v
 View Transactions
-   ↓
+   |
+   v
 Analyze Spending
-   ↓
+   |
+   v
 Review Budgets
-   ↓
+   |
+   v
 Create Savings Goals
-   ↓
+   |
+   v
 Check Financial Health
-   ↓
+   |
+   v
 Ask BankCore AI
 ```
 
@@ -777,53 +750,49 @@ What are my current financial alerts?
 What is my remaining budget for food?
 ```
 
----
+## Engineering Highlights
 
-# 🧩 Engineering Highlights
-
-### 🔐 Secure Authentication
+### Authentication
 
 JWT-based authentication using Spring Security.
 
-### 👤 Customer Data Isolation
+### Customer Data Isolation
 
 Banking information is retrieved using the authenticated customer's identity.
 
-### 🔄 Transaction Management
+### Transaction Management
 
 Financial operations are processed using database transactions.
 
-### 🔒 Concurrency Control
+### Concurrency Control
 
 Database locking is used where required to prevent inconsistent account updates.
 
-### 🔁 Idempotency
+### Idempotency
 
 Transfer requests use idempotency keys to prevent duplicate transactions.
 
-### 📒 Ledger
+### Ledger
 
 Transfers create corresponding debit and credit ledger entries.
 
-### 🌐 REST Architecture
+### REST Architecture
 
 Banking operations are exposed through structured REST APIs.
 
-### 🤖 AI Tool Calling
+### AI Tool Calling
 
 Spring AI connects Google Gemini with controlled backend banking tools.
 
-### 📚 RAG
+### RAG
 
 PGVector provides vector-based retrieval for BankCore-specific knowledge.
 
-### ☁️ Production Deployment
+### Production Deployment
 
 The application is deployed using Vercel, Render, and Neon PostgreSQL.
 
----
-
-# 📡 Monitoring
+## Monitoring
 
 The backend exposes a public health endpoint:
 
@@ -833,31 +802,25 @@ GET /health
 
 Production health check:
 
-https://bankcore-backend-izco.onrender.com/health
+[https://bankcore-backend-izco.onrender.com/health](https://bankcore-backend-izco.onrender.com/health)
 
 This endpoint can be used by uptime monitoring services to verify backend availability.
 
----
-
-# 🧭 Application Modules
-
-The BankCore frontend contains dedicated sections for:
+## Application Modules
 
 | Module | Purpose |
 |---|---|
-| 🏠 Dashboard | Overall financial overview |
-| 🏦 Accounts | Manage bank accounts |
-| 💸 Transfer | Send money between accounts |
-| 📜 Transactions | Review banking activity |
-| 📊 Spending | Analyze spending |
-| 💰 Budgets | Manage monthly budgets |
-| 🎯 Savings Goals | Track financial goals |
-| ❤️ Financial Health | View overall financial health |
-| 🤖 BankCore AI | AI-powered banking assistant |
+| Dashboard | Overall financial overview |
+| Accounts | Manage bank accounts |
+| Transfer | Send money between accounts |
+| Transactions | Review banking activity |
+| Spending | Analyze spending |
+| Budgets | Manage monthly budgets |
+| Savings Goals | Track financial goals |
+| Financial Health | View overall financial health |
+| BankCore AI | AI-powered banking assistant |
 
----
-
-# 🔮 Future Enhancements
+## Future Enhancements
 
 Possible future improvements include:
 
@@ -876,9 +839,7 @@ Possible future improvements include:
 - Advanced audit logging
 - Role-based banking administration
 
----
-
-# ⚠️ Disclaimer
+## Disclaimer
 
 BankCore is a software engineering and portfolio project designed to simulate personal banking functionality.
 
@@ -886,33 +847,23 @@ It is not connected to a real banking institution and should not be used to proc
 
 All demonstration balances and transactions are simulated.
 
----
+## Author
 
-# 👨‍💻 Author
-
-## Aayush Verma
+**Aayush Verma**
 
 B.Tech Computer Science & Engineering
 
-### 🔗 GitHub
+- GitHub: [https://github.com/Aayush30020](https://github.com/Aayush30020)
+- LinkedIn: [https://www.linkedin.com/in/aayush-verma-97995a288/](https://www.linkedin.com/in/aayush-verma-97995a288/)
+- Project Repository: [https://github.com/Aayush30020/BankCore-Personal_Banking_Platform](https://github.com/Aayush30020/BankCore-Personal_Banking_Platform)
 
-https://github.com/Aayush30020
+## Project Links
 
-### 💼 LinkedIn
-
-https://www.linkedin.com/in/aayush-verma-97995a288/
-
-### 📂 Project Repository
-
-https://github.com/Aayush30020/BankCore-Personal_Banking_Platform
-
-### 🚀 Live Application
-
-https://bank-core-personal-banking-platform.vercel.app/
+- Frontend: [https://bank-core-personal-banking-platform.vercel.app/](https://bank-core-personal-banking-platform.vercel.app/)
+- Backend: [https://bankcore-backend-izco.onrender.com/](https://bankcore-backend-izco.onrender.com/)
+- Health Check: [https://bankcore-backend-izco.onrender.com/health](https://bankcore-backend-izco.onrender.com/health)
+- GitHub: [https://github.com/Aayush30020/BankCore-Personal_Banking_Platform](https://github.com/Aayush30020/BankCore-Personal_Banking_Platform)
 
 ---
 
-<p align="center">
-  Built with Java, Spring Boot, React, PostgreSQL, Spring AI, and Google Gemini.
-</p>
-```
+Built with Java, Spring Boot, React, PostgreSQL, Spring AI, and Google Gemini.
