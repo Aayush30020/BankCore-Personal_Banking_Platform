@@ -125,6 +125,7 @@ public class SecurityConfig {
                                 // are publicly accessible.
                                 .requestMatchers(
                                         "/api/auth/**",
+                                        "/health",
                                         "/error"
                                 )
                                 .permitAll()
