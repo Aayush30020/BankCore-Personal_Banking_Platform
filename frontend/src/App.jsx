@@ -543,11 +543,7 @@ function BankingLayout({
 
                         <Route
                             path="/financial-health"
-                            element={
-                                <ProtectedRoute>
-                                    <FinancialHealthPage />
-                                </ProtectedRoute>
-                            }
+                            element={<FinancialHealthPage />}
                         />
 
                         <Route
@@ -610,7 +606,7 @@ function ProfileButton() {
 
     const name =
         user.name ||
-        "Aayush";
+        "User";
 
 
     const email =
@@ -654,6 +650,56 @@ function ProfileButton() {
 
 
 // ============================================================
+// DASHBOARD GREETING
+// ============================================================
+
+function getStoredUserName() {
+
+    try {
+
+        const storedUser =
+            localStorage.getItem(
+                "bankcore_user"
+            );
+
+        if (!storedUser) {
+            return "there";
+        }
+
+        const user =
+            JSON.parse(storedUser);
+
+        return (
+            user?.name?.trim() ||
+            "there"
+        );
+
+    } catch {
+
+        return "there";
+
+    }
+}
+
+
+function getTimeGreeting() {
+
+    const hour =
+        new Date().getHours();
+
+    if (hour < 12) {
+        return "Good morning";
+    }
+
+    if (hour < 18) {
+        return "Good afternoon";
+    }
+
+    return "Good evening";
+}
+
+
+// ============================================================
 // DASHBOARD
 // ============================================================
 
@@ -661,6 +707,12 @@ function Dashboard() {
 
     const navigate =
         useNavigate();
+
+    const userName =
+        getStoredUserName();
+
+    const greeting =
+        getTimeGreeting();
 
 
     // ==========================================================
@@ -1020,7 +1072,7 @@ function Dashboard() {
                         </p>
 
                         <h1>
-                            Good morning, Aayush
+                            {greeting}, {userName}
                         </h1>
 
                         <p className="page-description">
@@ -1143,7 +1195,7 @@ function Dashboard() {
                         </p>
 
                         <h1>
-                            Good morning, Aayush
+                            {greeting}, {userName}
                         </h1>
 
                         <p className="page-description">
@@ -1210,7 +1262,7 @@ function Dashboard() {
                     </p>
 
                     <h1>
-                        Good morning, Aayush
+                        {greeting}, {userName}
                     </h1>
 
                     <p className="page-description">
